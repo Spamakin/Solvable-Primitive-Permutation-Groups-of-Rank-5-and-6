@@ -69,7 +69,8 @@ QMPKD := [ # only imprimitive cases where e is a prime power
     [3,1,19,1,3],
     [3,2,2,2,9],
     [3,2,2,2,18]
-];
+];;
+
 
 for qmpkd in QMPKD do
     q := qmpkd[1];
@@ -81,56 +82,82 @@ for qmpkd in QMPKD do
     # if k <> 1 then continue; fi;
     if d <> 2 then continue; fi; # it seems to break for d != 2 right now
 
-    Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ":\n");
     for et in ["-","+"] do
 
-        GLe := GL(q^m,p^k);
-        GLp := GL(d*k,p);
-        perme := IsomorphismPermGroup(GLe);
+        GLpk := GL(q^m, p^k);
+        GLp := GL(k * q^m, p);
+        permpk := IsomorphismPermGroup(GLpk);
         permp := IsomorphismPermGroup(GLp);
-        GLePerm := Image(perme,GLe);
+        GLpkPerm := Image(permpk,GLpk);
         GLpPerm := Image(permp,GLp);
 
-        # Find the extraspecial subgroup of GL(q^m,p^k)
-        GLeSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLePerm,q)), Representative);
+        # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
-        GLeSubgroups := Filtered(GLeSubgroups,x->Order(x) = Order(Extraspecial));
-        GLeSubgroups := Filtered(GLeSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        Ex := GLeSubgroups[1];
-        # Calculate its normalizer in GL(q^m,p^k)
-        NA := Normalizer(GLePerm, Ex);
-        NAp := NA;
 
-        if k = 1 then
-        # If k=1, GL(q^m,p^k) = GL(d,p) so no embedding is needed
-        N := Normalizer(GLe,PreImage(perme, NA));
-        else
-        basis := Basis(GF(p^k));
-        GLeGens := GeneratorsOfGroup(GLe);
-        GLpGens := [];
-        for GLeGen in GLeGens do
-            Append(GLpGens, [BlownUpMat(basis, GLeGen)]);
-        od;
-        # Embed NA into GL(d,p)
-        embedding := GroupHomomorphismByImagesNC(GLe, GLp, GLeGens, GLpGens);
-        NAp := Image(embedding, PreImage(perme, NA));
-        # Calculate its normalizer
-        N := Normalizer(GLp, NAp);
-        fi;
+        # Identify subgroups of GL(q^m, p^k) isomorphic to E
+        # There may be more than 1 (?)
+        GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
+        GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
+        GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
+        Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, ":\n");
+        Print("Number of Extraspecial Groups found for these parameters = ", Length(GLpkSubgroups), "\n");
+        # FIXME: sometimes this filtering is non-unique, why?
+        for Ex in GLpkSubgroups do
+            # Calculate normalizer of E in GL(q^m,p^k)
+            NE := Normalizer(GLpkPerm, Ex);
 
-        # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
-        for G in List((ConjugacyClassesSubgroups(N)), Representative) do
-            if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(p)) then
-                G0 := Image(permp, G);
-                rank := Size(Orbits(G0)) + 1;
-                if rank < 6 and rank > 1 then
-                    # Print(G0, " rank: ", rank, " structure: ", StructureDescription(G0), "\n");
-                    if Length(IsomorphicSubgroups(G, Extraspecial)) > 0 then
-                        Print("rank: ", rank, ", et: ", et, ", order: ", Order(G0), ", structure: ", StructureDescription(G0), "\n");
+            if k = 1 then
+                # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
+                N := Normalizer(GLpk,PreImage(permpk, NE));
+            else
+                basis := Basis(GF(p^k));
+                GLpkGens := GeneratorsOfGroup(GLpk);
+                GLpGens := [];
+                for GLpkGen in GLpkGens do
+                    Append(GLpGens, [BlownUpMat(basis, GLpkGen)]);
+                od;
+
+                # Embed NE into GL(k * q^m, p)
+                embedding := GroupHomomorphismByImagesNC(GLpk, GLp, GLpkGens, GLpGens);
+                NEp := Image(embedding, PreImage(permpk, NE));
+
+                # Calculate its normalizer
+                N := Normalizer(GLp, NEp);
+            fi;
+
+            # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
+            # Conjugacy suffices since conjugate groups will have the same orbit structure
+            for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
+                # If in B then G_0 is primitive matrix group
+                if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) then
+                    G0Perm := Image(permp, G0);
+                    rank := Size(Orbits(G0Perm)) + 1;
+                    if rank < 5 and rank > 1 then
+                        # Get number of subgroups of G0 isomorphic to E
+                        copies_of_E := [];
+                        for mono in List(IsomorphicSubgroups(G0, Ex)) do
+                            Add(copies_of_E, Image(mono, Ex));
+                        od;
+                        copies_of_E_unique := Unique(copies_of_E);
+                        if Length(copies_of_E_unique) > 0 then
+                            Print("Number of Subgroups Iso. to E = ", Length(copies_of_E_unique), "\n");
+                            # Check if we have any copies of E
+                            for Ex_in_G0 in copies_of_E_unique do
+                                permEx := IsomorphismPermGroup(Ex_in_G0);
+                                ImEx := Image(permEx, Ex_in_G0);
+                                Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, ":\n");
+                                Print("E = ", StructureDescription(Ex_in_G0), "\n");
+                                Print("E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
+                                Print("Rank = ", rank, "\n");
+                                Print("Order of G_0 = ", Order(G0), "\n");
+                                Print("G_0 = ", StructureDescription(G0), "\n\n");
+                            od;
+                        fi;
                     fi;
                 fi;
-            fi;
+            od;
         od;
+
     od;
     Print("\n");
 od;
