@@ -100,7 +100,7 @@ for qmpkd in QMPKD do
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
         Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, ":\n");
-        Print("Number of Extraspecial Groups found for these parameters = ", Length(GLpkSubgroups), "\n");
+        Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found for these parameters = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
         for Ex in GLpkSubgroups do
             # Calculate normalizer of E in GL(q^m,p^k)
@@ -140,7 +140,7 @@ for qmpkd in QMPKD do
                         od;
                         copies_of_E_unique := Unique(copies_of_E);
                         if Length(copies_of_E_unique) > 0 then
-                            Print("Number of Subgroups Iso. to E = ", Length(copies_of_E_unique), "\n");
+                            Print("Number of Subgroups of G0 Iso. to E = ", Length(copies_of_E_unique), "\n");
                             # Check if we have any copies of E
                             for Ex_in_G0 in copies_of_E_unique do
                                 permEx := IsomorphismPermGroup(Ex_in_G0);
