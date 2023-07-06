@@ -1,59 +1,85 @@
 SetRecursionTrapInterval(10000);
 
-q := 2;;
-m := 1;;
+# q := 2;;
+# m := 1;;
 # p := 83;;
 # k := 1;;
 # d := 2;;
 # et := "-";;
 
-PKD := [
-[3,	1,2],
-[3,	2,2],
-[3,	2,4],
-[3,	3,2],
-[3,	3,6],
-[3,	4,2],
-[3,	4,4],
-[3,	4,8],
-[3,	5,10],
-[5,	1,2],
-[5,	2,2],
-[5,	2,4],
-[5,	3,6],
-[7,	1,2],
-[7,	2,2],
-[7,	2,4],
-[11,1,2],
-[11,2,4],
-[13,1,2],
-[13,2,4],
-[17,1,2],
-[19,1,2],
-[23,1,2],
-[29,1,2],
-[31,1,2],
-[37,1,2],
-[41,1,2],
-[43,1,2],
-[47,1,2],
-[53,1,2],
-[59,1,2],
-[61,1,2],
-[67,1,2],
-[71,1,2],
-[73,1,2],
-[79,1,2],
-[83,1,2],
-[89,1,2]
+QMPKD := [ # only imprimitive cases where e is a prime power
+    [2,1,3,1,2],
+    [2,1,3,2,2],
+    [2,1,3,2,4],
+    [2,1,3,3,2],
+    [2,1,3,3,6],
+    [2,1,3,4,2],
+    [2,1,3,4,4],
+    [2,1,3,4,8],
+    [2,1,3,5,10],
+    [2,1,5,1,2],
+    [2,1,5,2,2],
+    [2,1,5,2,4],
+    [2,1,5,3,6],
+    [2,1,7,1,2],
+    [2,1,7,2,2],
+    [2,1,7,2,4],
+    [2,1,11,1,2],
+    [2,1,11,2,4],
+    [2,1,13,1,2],
+    [2,1,13,2,4],
+    [2,1,17,1,2],
+    [2,1,19,1,2],
+    [2,1,23,1,2],
+    [2,1,29,1,2],
+    [2,1,31,1,2],
+    [2,1,37,1,2],
+    [2,1,41,1,2],
+    [2,1,43,1,2],
+    [2,1,47,1,2],
+    [2,1,53,1,2],
+    [2,1,59,1,2],
+    [2,1,61,1,2],
+    [2,1,67,1,2],
+    [2,1,71,1,2],
+    [2,1,73,1,2],
+    [2,1,79,1,2],
+    [2,1,83,1,2],
+    [2,1,89,1,2],
+    [2,2,3,1,4],
+    [2,2,3,2,4],
+    [2,2,3,2,8],
+    [2,2,5,1,4],
+    [2,2,7,1,4],
+    [2,2,11,1,4],
+    [2,2,13,1,4],
+    [2,3,3,1,8],
+    [2,3,5,1,8],
+    [2,4,3,1,16],
+    [3,1,2,2,3],
+    [3,1,2,2,6],
+    [3,1,2,4,3],
+    [3,1,2,4,6],
+    [3,1,2,4,12],
+    [3,1,2,6,18],
+    [3,1,5,2,3],
+    [3,1,5,2,6],
+    [3,1,7,1,3],
+    [3,1,13,1,3],
+    [3,1,19,1,3],
+    [3,2,2,2,9],
+    [3,2,2,2,18]
 ];
 
-for pkd in PKD do
-    p := pkd[1];
-    k := pkd[2];
-    d := pkd[3];
+for qmpkd in QMPKD do
+    q := qmpkd[1];
+    m := qmpkd[2];
+    p := qmpkd[3];
+    k := qmpkd[4];
+    d := qmpkd[5];
 
-    if k <> 1 then continue; fi;
+    # if k <> 1 then continue; fi;
+    if d <> 2 then continue; fi; # it seems to break for d != 2 right now
 
     Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ":\n");
     for et in ["-","+"] do
@@ -86,7 +112,7 @@ for pkd in PKD do
             Append(GLpGens, [BlownUpMat(basis, GLeGen)]);
         od;
         # Embed NA into GL(d,p)
-        embedding := GroupHomomorphismByImages(GLe, GLp, GLeGens, GLpGens);
+        embedding := GroupHomomorphismByImagesNC(GLe, GLp, GLeGens, GLpGens);
         NAp := Image(embedding, PreImage(perme, NA));
         # Calculate its normalizer
         N := Normalizer(GLp, NAp);
@@ -97,10 +123,10 @@ for pkd in PKD do
             if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(p)) then
                 G0 := Image(permp, G);
                 rank := Size(Orbits(G0)) + 1;
-                if rank < 5 and rank > 1 then
+                if rank < 6 and rank > 1 then
                     # Print(G0, " rank: ", rank, " structure: ", StructureDescription(G0), "\n");
                     if Length(IsomorphicSubgroups(G, Extraspecial)) > 0 then
-                        Print("rank: ", rank, ", et: ", et, ", structure: ", StructureDescription(G0), "\n");
+                        Print("rank: ", rank, ", et: ", et, ", order: ", Order(G0), ", structure: ", StructureDescription(G0), "\n");
                     fi;
                 fi;
             fi;
