@@ -7,7 +7,7 @@ SetRecursionTrapInterval(10000);
 # d := 2;;
 # et := "-";;
 
-QMPKD := [ # only irreducible cases where e is a prime power
+QMPKD := [ # only imprimitive cases where e is a prime power
     [2,1,3,1,2],
     [2,1,3,2,2],
     [2,1,3,2,4],
