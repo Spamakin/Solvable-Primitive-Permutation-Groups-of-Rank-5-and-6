@@ -190,9 +190,11 @@ for qmpkd in QMPKD do
                 fi;
             od;
         od;
-        Print("Number of Groups = ", NumGrps, "\n");
-        Print("Max |G0|         = ", MaxOrder, "\n");
-        Print("Rank G0          = ", RankOfMax, "\n");
-        Print("\n");
+        if NumGrps > 0 then
+            Print("Number of Groups = ", NumGrps, "\n");
+            Print("Max |G0|         = ", MaxOrder, "\n");
+            Print("Rank G0          = ", RankOfMax, "\n");
+            Print("\n");
+        fi;
     od;
 od;
