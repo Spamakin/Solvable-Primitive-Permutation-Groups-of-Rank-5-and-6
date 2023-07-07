@@ -101,7 +101,7 @@ for qmpkd in QMPKD do
         # There may be more than 1 (?)
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
-        GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
+        GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial)); #TODO: What is IdGroup
         Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
         Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
@@ -147,17 +147,18 @@ for qmpkd in QMPKD do
                     # Get number of subgroups of G0 isomorphic to E
                     copies_of_E := [];
                     for mono in List(IsomorphicSubgroups(G0, ExCand)) do
-                        Add(copies_of_E, Image(mono, ExCand));
+                        permEx := IsomorphismPermGroup(ExCand);
+                        ImEx := Image(permEx, ExCand);
+                        if IsNormal(G0Perm, ImEx) then
+                            Add(copies_of_E, ImEx);
+                        fi;
                     od;
 
                     # Check if we have any copies of E
                     copies_of_E_unique := Unique(copies_of_E);
-                    E_norm_in_G0 := 0;
-                    E_not_norm_in_G0 := 0;
-                    Print("    Number of Subgroups of G0 Iso. to E = ", Length(copies_of_E_unique), "\n");
                     for Ex_in_G0 in copies_of_E_unique do
-                        permEx := IsomorphismPermGroup(Ex_in_G0);
-                        ImEx := Image(permEx, Ex_in_G0);
+                        # permEx := IsomorphismPermGroup(Ex_in_G0);
+                        # ImEx := Image(permEx, Ex_in_G0);
                         NumGrps := NumGrps + 1;
                         if Order(G0) > MaxOrder then
                             MaxOrder := Order(G0);
@@ -168,18 +169,9 @@ for qmpkd in QMPKD do
                         Print("        Order of G_0 = ", Order(G0), "\n");
                         Print("        Rank = ", rank, "\n");
                         Print("        E = ", StructureDescription(Ex_in_G0), "\n");
-                        if IsNormal(G0Perm, ImEx) then
-                            E_norm_in_G0 := E_norm_in_G0 + 1;
-                        else
-                            E_not_norm_in_G0 := E_not_norm_in_G0 + 1;
-                        fi;
                         Print("        E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
                         Print("\n");
                     od;
-                    # FIXME: In theory E should always be normal in G0
-                    Print("    Number of Subgroups of G0 Iso. to E Normal     = ", E_norm_in_G0, "\n");
-                    Print("    Number of Subgroups of G0 Iso. to E not Normal = ", E_not_norm_in_G0, "\n");
-                    Print("\n");
                 # else
                 #     Print("G0 Solvable         = ", IsSolvable(G0), "\n");
                 #     Print("G0 Irred Mat Grp    = ", IsIrreducibleMatrixGroup(G0), "\n");
