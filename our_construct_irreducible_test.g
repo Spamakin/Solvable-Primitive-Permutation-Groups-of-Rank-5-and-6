@@ -83,6 +83,9 @@ for qmpkd in QMPKD do
     if d <> 2 then continue; fi; # it seems to break for d != 2 right now
 
     for et in ["-","+"] do
+        NumGrps := 0;
+        MaxOrder := 0;
+        RankOfMax := 0;
 
         GLpk := GL(q^m, p^k);
         GLp := GL(k * q^m, p);
@@ -155,7 +158,15 @@ for qmpkd in QMPKD do
                     for Ex_in_G0 in copies_of_E_unique do
                         permEx := IsomorphismPermGroup(Ex_in_G0);
                         ImEx := Image(permEx, Ex_in_G0);
+                        NumGrps := NumGrps + 1;
+                        if Order(G0) > MaxOrder then
+                            MaxOrder := Order(G0);
+                            RankOfMax := rank;
+                        fi;
                         Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
+                        Print("        G_0 = ", StructureDescription(G0), "\n");
+                        Print("        Order of G_0 = ", Order(G0), "\n");
+                        Print("        Rank = ", rank, "\n");
                         Print("        E = ", StructureDescription(Ex_in_G0), "\n");
                         if IsNormal(G0Perm, ImEx) then
                             E_norm_in_G0 := E_norm_in_G0 + 1;
@@ -163,9 +174,7 @@ for qmpkd in QMPKD do
                             E_not_norm_in_G0 := E_not_norm_in_G0 + 1;
                         fi;
                         Print("        E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
-                        Print("        Rank = ", rank, "\n");
-                        Print("        Order of G_0 = ", Order(G0), "\n");
-                        Print("        G_0 = ", StructureDescription(G0), "\n\n");
+                        Print("\n");
                     od;
                     # FIXME: In theory E should always be normal in G0
                     Print("    Number of Subgroups of G0 Iso. to E Normal     = ", E_norm_in_G0, "\n");
@@ -181,7 +190,9 @@ for qmpkd in QMPKD do
                 fi;
             od;
         od;
-
+        Print("Number of Groups = ", NumGrps, "\n");
+        Print("Max |G0|         = ", MaxOrder, "\n");
+        Print("Rank G0          = ", RankOfMax, "\n");
+        Print("\n");
     od;
-    Print("\n");
 od;
