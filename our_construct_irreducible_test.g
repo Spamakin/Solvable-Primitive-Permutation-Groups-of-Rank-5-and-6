@@ -102,9 +102,9 @@ for qmpkd in QMPKD do
         Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
         Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
-        for Ex in GLpkSubgroups do
-            # Calculate normalizer of E in GL(q^m,p^k)
-            NE := Normalizer(GLpkPerm, Ex);
+        for ExCand in GLpkSubgroups do
+            # Calculate normalizer of ExCand in GL(q^m,p^k)
+            NE := Normalizer(GLpkPerm, ExCand);
 
             if k = 1 then
                 # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
@@ -126,47 +126,58 @@ for qmpkd in QMPKD do
             fi;
 
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
+            # TODO: Rewrite into own function + trim using maximal subgroups
             # Conjugacy suffices since conjugate groups will have the same orbit structure
             for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
-                # If in B then G_0 is primitive matrix group
-                if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) then
-                    G0Perm := Image(permp, G0);
-                    rank := Size(Orbits(G0Perm)) + 1;
-                    if rank < 5 and rank > 1 then
-                        # Get number of subgroups of G0 isomorphic to E
-                        copies_of_E := [];
-                        for mono in List(IsomorphicSubgroups(G0, Ex)) do
-                            Add(copies_of_E, Image(mono, Ex));
-                        od;
+                # ExCand should be normal in G0
+                G0Perm := Image(permp, G0);
+                permExCand := IsomorphismPermGroup(ExCand);
+                ExCandPerm := Image(permExCand, ExCand);
+                rank := Size(Orbits(G0Perm)) + 1;
+                # Requirements:
+                #   G0 Solvable
+                #   G0 Irreducible
+                #   If in B then G0 is primitive matrix group
+                #   ExCand normal in G0
+                #   1 < rank < 5
+                if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and IsNormal(G0Perm, ExCandPerm) and 1 < rank and rank < 5 then
+                    # Get number of subgroups of G0 isomorphic to E
+                    copies_of_E := [];
+                    for mono in List(IsomorphicSubgroups(G0, ExCand)) do
+                        Add(copies_of_E, Image(mono, ExCand));
+                    od;
 
-                        # Check if we have any copies of E
-                        copies_of_E_unique := Unique(copies_of_E);
-                        if Length(copies_of_E_unique) > 0 then
-                            E_norm_in_G0 := 0;
-                            E_not_norm_in_G0 := 0;
-                            Print("    Number of Subgroups of G0 Iso. to E = ", Length(copies_of_E_unique), "\n");
-                            for Ex_in_G0 in copies_of_E_unique do
-                                permEx := IsomorphismPermGroup(Ex_in_G0);
-                                ImEx := Image(permEx, Ex_in_G0);
-                                Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                                Print("        E = ", StructureDescription(Ex_in_G0), "\n");
-                                if IsNormal(G0Perm, ImEx) then
-                                    E_norm_in_G0 := E_norm_in_G0 + 1;
-                                else
-                                    E_not_norm_in_G0 := E_not_norm_in_G0 + 1;
-                                fi;
-                                Print("        E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
-                                Print("        Rank = ", rank, "\n");
-                                Print("        Order of G_0 = ", Order(G0), "\n");
-                                Print("        G_0 = ", StructureDescription(G0), "\n\n");
-                            od;
-
-                            # FIXME: In theory E should always be normal in G0
-                            Print("    Number of Subgroups of G0 Iso. to E Normal     = ", E_norm_in_G0, "\n");
-                            Print("    Number of Subgroups of G0 Iso. to E not Normal = ", E_not_norm_in_G0, "\n");
-                            Print("\n");
+                    # Check if we have any copies of E
+                    copies_of_E_unique := Unique(copies_of_E);
+                    E_norm_in_G0 := 0;
+                    E_not_norm_in_G0 := 0;
+                    Print("    Number of Subgroups of G0 Iso. to E = ", Length(copies_of_E_unique), "\n");
+                    for Ex_in_G0 in copies_of_E_unique do
+                        permEx := IsomorphismPermGroup(Ex_in_G0);
+                        ImEx := Image(permEx, Ex_in_G0);
+                        Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
+                        Print("        E = ", StructureDescription(Ex_in_G0), "\n");
+                        if IsNormal(G0Perm, ImEx) then
+                            E_norm_in_G0 := E_norm_in_G0 + 1;
+                        else
+                            E_not_norm_in_G0 := E_not_norm_in_G0 + 1;
                         fi;
-                    fi;
+                        Print("        E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
+                        Print("        Rank = ", rank, "\n");
+                        Print("        Order of G_0 = ", Order(G0), "\n");
+                        Print("        G_0 = ", StructureDescription(G0), "\n\n");
+                    od;
+                    # FIXME: In theory E should always be normal in G0
+                    Print("    Number of Subgroups of G0 Iso. to E Normal     = ", E_norm_in_G0, "\n");
+                    Print("    Number of Subgroups of G0 Iso. to E not Normal = ", E_not_norm_in_G0, "\n");
+                    Print("\n");
+                # else
+                #     Print("G0 Solvable         = ", IsSolvable(G0), "\n");
+                #     Print("G0 Irred Mat Grp    = ", IsIrreducibleMatrixGroup(G0), "\n");
+                #     Print("G0 Prim Mat Grp     = ", IsPrimitiveMatrixGroup(G0, GF(p)), "\n");
+                #     Print("ExCand Normal in G0 = ", IsNormal(G0Perm, ExCandPerm), "\n");
+                #     Print("rank                = ", rank, "\n");
+                #     Print("\n");
                 fi;
             od;
         od;
