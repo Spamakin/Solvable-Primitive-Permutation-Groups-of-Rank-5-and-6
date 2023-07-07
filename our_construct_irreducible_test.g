@@ -80,7 +80,7 @@ for qmpkd in QMPKD do
     d := qmpkd[5];
 
     # if k <> 1 then continue; fi;
-    if d <> 2 then continue; fi; # it seems to break for d != 2 right now
+    # if d <> 2 then continue; fi; # it seems to break for d != 2 right now
 
     for et in ["-","+"] do
         NumGrps := 0;
