@@ -8,25 +8,25 @@ SetRecursionTrapInterval(10000);
 # et := "-";;
 
 QMPKDET := [ # last year's cases
-    # [2,1,3,1,2,"-"],
-    # [2,1,5,1,2,"-"],
-    # [2,1,7,1,2,"-"],
-    # [2,1,7,1,2,"+"],
-    # [2,1,11,1,2,"-"],
-    # [2,1,23,1,2,"-"],
-    # [2,2,3,1,4,"-"],
-    # [3,1,2,2,3,"+"],
-    # [2,1,3,2,4,"-"],
-    # [2,1,13,1,2,"-"],
-    # [2,1,17,1,2,"-"],
-    # [2,1,19,1,2,"-"],
-    # [2,1,23,1,2,"+"],
-    # [2,1,3,3,6,"-"],
-    # [2,1,29,1,2,"-"],
-    # [2,1,31,1,2,"-"],
-    # [2,1,47,1,2,"-"],
-    # [2,2,3,1,4,"+"],
-    # [2,2,7,1,4,"-"],
+    [2,1,3,1,2,"-"],
+    [2,1,5,1,2,"-"],
+    [2,1,7,1,2,"-"],
+    [2,1,7,1,2,"+"],
+    [2,1,11,1,2,"-"],
+    [2,1,23,1,2,"-"],
+    [2,2,3,1,4,"-"],
+    [3,1,2,2,3,"+"],
+    [2,1,3,2,4,"-"],
+    [2,1,13,1,2,"-"],
+    [2,1,17,1,2,"-"],
+    [2,1,19,1,2,"-"],
+    [2,1,23,1,2,"+"],
+    [2,1,3,3,6,"-"],
+    [2,1,29,1,2,"-"],
+    [2,1,31,1,2,"-"],
+    [2,1,47,1,2,"-"],
+    [2,2,3,1,4,"+"],
+    [2,2,7,1,4,"-"],
     [3,1,7,1,3,"+"],
     [2,1,5,2,4,"-"],
     [2,1,31,1,2,"+"],
@@ -103,8 +103,8 @@ for qmpkdet in QMPKDET do
         for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
             # ExCand should be normal in G0
             G0Perm := Image(permp, G0);
-            permExCand := IsomorphismPermGroup(ExCand);
-            ExCandPerm := Image(permExCand, ExCand);
+            # permExCand := IsomorphismPermGroup(ExCand);
+            # ExCandPerm := Image(permExCand, ExCand);
             rank := Size(Orbits(G0Perm)) + 1;
             # Requirements:
             #   G0 Solvable
@@ -117,7 +117,7 @@ for qmpkdet in QMPKDET do
                 structDesc := StructureDescription(G0);
 
                 copies_of_E := [];
-                for mono in List(IsomorphicSubgroups(G0, ExCand)) do
+                for mono in List(IsomorphicSubgroups(G0, ExCand : findall:=false)) do
                     Add(copies_of_E, Image(mono, ExCand));
                 od;
 
