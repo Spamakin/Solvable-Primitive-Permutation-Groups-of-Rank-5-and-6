@@ -56,6 +56,8 @@ Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 2
 q=2, m=1, p=3, k=2, d=4, et=-
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 
+# FIXME: Should have 11 groups, rank = 3, order <= 384
+
 q=2, m=1, p=3, k=2, d=4, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 2
 
@@ -67,6 +69,8 @@ Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 
 q=2, m=1, p=3, k=3, d=6, et=-
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
+
+# FIXME: Should have 6 groups, rank = 3, order <= 1872
 
 q=2, m=1, p=3, k=3, d=6, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
@@ -138,6 +142,8 @@ Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 q=2, m=1, p=5, k=2, d=4, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 2
 
+# FIXME: Should have found 4 groups, order <= 1152, rank 4
+
 q=2, m=1, p=5, k=3, d=6, et=-
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 
@@ -207,6 +213,8 @@ Number of Groups = 8
 Max |G0|         = 144
 Rank G0          = 2
 
+# FIXME: Should have 7 groups, not 8
+
 q=2, m=1, p=7, k=1, d=2, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 
@@ -220,6 +228,8 @@ Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 Number of Groups = 1
 Max |G0|         = 48
 Rank G0          = 3
+
+# SHOULD HAVE 3 groups, order <= 96, rank 2
 
 q=2, m=1, p=7, k=2, d=2, et=-
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
@@ -421,6 +431,8 @@ Rank G0          = 2
 
 q=2, m=1, p=23, k=1, d=2, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
+
+# FIXME: Should have 1 group of order 352 rank 3
 
 q=2, m=1, p=29, k=1, d=2, et=-
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
@@ -691,6 +703,8 @@ Number of Groups = 7
 Max |G0|         = 640
 Rank G0          = 2
 
+# FIXME: Should have 3 groups, not 7
+
 q=2, m=2, p=3, k=1, d=4, et=+
 Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 
@@ -818,6 +832,3 @@ Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = 1
 Number of Groups = 13
 Max |G0|         = 2304
 Rank G0          = 3
-
-[1m[31m[0m[31m
-[0m
