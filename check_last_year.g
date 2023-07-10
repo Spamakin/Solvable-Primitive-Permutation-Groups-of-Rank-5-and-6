@@ -101,16 +101,13 @@ for qmpkdet in QMPKDET do
         # TODO: Rewrite into own function + trim using maximal subgroups
         # Conjugacy suffices since conjugate groups will have the same orbit structure
         for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
-            # ExCand should be normal in G0
             G0Perm := Image(permp, G0);
-            # permExCand := IsomorphismPermGroup(ExCand);
-            # ExCandPerm := Image(permExCand, ExCand);
             rank := Size(Orbits(G0Perm)) + 1;
+
             # Requirements:
             #   G0 Solvable
             #   G0 Irreducible
             #   If in B then G0 is primitive matrix group
-            #   ExCand normal in G0
             #   1 < rank < 5
             if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and 1 < rank and rank < 5 then
                 # Get number of subgroups of G0 isomorphic to E
@@ -123,16 +120,11 @@ for qmpkdet in QMPKDET do
 
                 # Check if we have any copies of E
                 copies_of_E_unique := Unique(copies_of_E);
-                E_norm_in_G0 := 0;
-                E_not_norm_in_G0 := 0;
-                # Print("    Number of Subgroups of G0 Iso. to E = ", Length(copies_of_E_unique), "\n");
                 if Length(copies_of_E) = 0 then
                     continue;
                 fi;
                 Append(groupDescriptions, [structDesc]);
-                # if not (IsCyclic(G0)) then
-                #     Append(groupDescriptions, [structDesc]);
-                # fi;
+
                 for Ex_in_G0 in copies_of_E_unique do
                     permEx := IsomorphismPermGroup(Ex_in_G0);
                     ImEx := Image(permEx, Ex_in_G0);
@@ -146,25 +138,7 @@ for qmpkdet in QMPKDET do
                     # Print("        Order of G_0 = ", Order(G0), "\n");
                     # Print("        Rank = ", rank, "\n");
                     # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
-                    if IsNormal(G0Perm, ImEx) then
-                        E_norm_in_G0 := E_norm_in_G0 + 1;
-                    else
-                        E_not_norm_in_G0 := E_not_norm_in_G0 + 1;
-                    fi;
-                    # Print("        E normal in G_0 = ", IsNormal(G0Perm, ImEx), "\n");
-                    # Print("\n");
                 od;
-                # FIXME: In theory E should always be normal in G0
-                # Print("    Number of Subgroups of G0 Iso. to E Normal     = ", E_norm_in_G0, "\n");
-                # Print("    Number of Subgroups of G0 Iso. to E not Normal = ", E_not_norm_in_G0, "\n");
-                # Print("\n");
-            # else
-            #     Print("G0 Solvable         = ", IsSolvable(G0), "\n");
-            #     Print("G0 Irred Mat Grp    = ", IsIrreducibleMatrixGroup(G0), "\n");
-            #     Print("G0 Prim Mat Grp     = ", IsPrimitiveMatrixGroup(G0, GF(p)), "\n");
-            #     Print("ExCand Normal in G0 = ", IsNormal(G0Perm, ExCandPerm), "\n");
-            #     Print("rank                = ", rank, "\n");
-            #     Print("\n");
             fi;
         od;
     od;
