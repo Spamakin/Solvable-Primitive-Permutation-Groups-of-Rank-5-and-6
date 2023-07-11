@@ -7,7 +7,9 @@ SetRecursionTrapInterval(10000);
 # d := 2;;
 # et := "-";;
 
-QMPKDET := [ # last year's cases
+# Read("/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank-4-gps/Line29grps.g");
+
+QMPKDET := [ # last year's irreducible cases
     [2,1,3,1,2,"-"],
     [2,1,5,1,2,"-"],
     [2,1,7,1,2,"-"],
@@ -48,13 +50,12 @@ for qmpkdet in QMPKDET do
     d := qmpkdet[5];
     et := qmpkdet[6];
 
-    # if k <> 1 then continue; fi;
-    # if d <> 2 then continue; fi; # it seems to break for d != 2 right now
 
     NumGrps := 0;
     MaxOrder := 0;
     RankOfMax := 0;
     groupDescriptions := [];
+    groupList := [];
 
     GLpk := GL(q^m, p^k);
     GLp := GL(k * q^m, p);
@@ -71,9 +72,6 @@ for qmpkdet in QMPKDET do
     GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
     GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
     GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-    # Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-    # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
-    # FIXME: sometimes this filtering is non-unique, why?
     for ExCand in GLpkSubgroups do
         # Calculate normalizer of ExCand in GL(q^m,p^k)
         NE := Normalizer(GLpkPerm, ExCand);
@@ -111,7 +109,6 @@ for qmpkdet in QMPKDET do
             #   1 < rank < 5
             if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and 1 < rank and rank < 5 then
                 # Get number of subgroups of G0 isomorphic to E
-                structDesc := StructureDescription(G0);
 
                 copies_of_E := [];
                 for mono in List(IsomorphicSubgroups(G0, ExCand : findall:=false)) do
@@ -123,6 +120,19 @@ for qmpkdet in QMPKDET do
                 if Length(copies_of_E) = 0 then
                     continue;
                 fi;
+
+                failed := false;
+                for H in groupList do
+                    if not (IsomorphismGroups(G0, H) = fail) then
+                        failed := true; #if G0 is iso to any previous group with these parameters, don't count it
+                        # Print(StructureDescription(G0), " ISO TO ", StructureDescription(H), "\n\n");
+                    fi;
+                od;
+                if failed then
+                    continue;
+                fi;
+                Append(groupList, [G0]);
+                structDesc := StructureDescription(G0);
                 Append(groupDescriptions, [structDesc]);
 
                 for Ex_in_G0 in copies_of_E_unique do
@@ -143,6 +153,9 @@ for qmpkdet in QMPKDET do
         od;
     od;
     NumGrps := Length(Unique(groupDescriptions));
-    # Print(Unique(groupDescriptions), "\n");
     Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
+    # for desc in Unique(groupDescriptions) do
+    #     Print(desc, "\n");
+    # od;
+    # Print("\n");
 od;
