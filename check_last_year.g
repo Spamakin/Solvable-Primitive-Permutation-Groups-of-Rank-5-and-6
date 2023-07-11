@@ -1,15 +1,8 @@
 SetRecursionTrapInterval(10000);
+PrintTo("rank_1_4_table");
 
-# q := 2;;
-# m := 1;;
-# p := 83;;
-# k := 1;;
-# d := 2;;
-# et := "-";;
-
-# Read("/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank-4-gps/Line29grps.g");
-
-QMPKDET := [ # last year's irreducible cases
+# last year's irreducible cases
+QMPKDET := [
     [2,1,3,1,2,"-"],
     [2,1,5,1,2,"-"],
     [2,1,7,1,2,"-"],
@@ -41,6 +34,7 @@ QMPKDET := [ # last year's irreducible cases
     [2,2,5,1,4,"+"]
 ];;
 
+RankGroups := [[], [], [], []];
 
 for qmpkdet in QMPKDET do
     q := qmpkdet[1];
@@ -131,9 +125,19 @@ for qmpkdet in QMPKDET do
                 if failed then
                     continue;
                 fi;
-                Append(groupList, [G0]);
+                Add(groupList, G0);
                 structDesc := StructureDescription(G0);
-                Append(groupDescriptions, [structDesc]);
+                Add(groupDescriptions, structDesc);
+
+                AlreadyFound := false;
+                for H in RankGroups[rank] do
+                    if not (IsomorphismGroups(G0, H) = fail) then
+                        AlreadyFound := true;
+                    fi;
+                od;
+                if not AlreadyFound then
+                    Add(RankGroups[rank], G0);
+                fi;
 
                 for Ex_in_G0 in copies_of_E_unique do
                     permEx := IsomorphismPermGroup(Ex_in_G0);
@@ -143,19 +147,15 @@ for qmpkdet in QMPKDET do
                         MaxOrder := Order(G0);
                         RankOfMax := rank;
                     fi;
-                    # Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                    # Print("        G_0 = ", structDesc, "\n");
-                    # Print("        Order of G_0 = ", Order(G0), "\n");
-                    # Print("        Rank = ", rank, "\n");
-                    # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
                 od;
             fi;
         od;
     od;
     NumGrps := Length(groupList);
-    Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
-    # for desc in groupDescriptions do
-    #     Print(desc, "\n");
-    # od;
-    # Print("\n");
+    AppendTo("rank_1_4_table"," ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
+    Print(" ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
 od;
+
+# for i in [2..4] do
+#     Print("Number of groups of rank ", i, " = ", Length(RankGroups[i]), "\n");
+# od;
