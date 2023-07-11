@@ -113,6 +113,11 @@ for e in [2, 3, 4, 8]:
 
         w += ep
 
+# For e = 6 we only have 1 possibility
+# b = 1
+# 6 is our prime
+final_params_irred.append([6, 1, 7, 1, 1 * 6 * 1])
+
 # for now just irreducible
 final_params_irred.sort()
 for params in final_params_irred:
