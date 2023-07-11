@@ -152,9 +152,9 @@ for qmpkdet in QMPKDET do
             fi;
         od;
     od;
-    NumGrps := Length(Unique(groupDescriptions));
+    NumGrps := Length(groupList);
     Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
-    # for desc in Unique(groupDescriptions) do
+    # for desc in groupDescriptions do
     #     Print(desc, "\n");
     # od;
     # Print("\n");
