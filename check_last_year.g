@@ -34,8 +34,6 @@ QMPKDET := [
     [2,2,5,1,4,"+"]
 ];;
 
-RankGroups := [[], [], [], []];
-
 for qmpkdet in QMPKDET do
     q := qmpkdet[1];
     m := qmpkdet[2];
@@ -129,16 +127,6 @@ for qmpkdet in QMPKDET do
                 structDesc := StructureDescription(G0);
                 Add(groupDescriptions, structDesc);
 
-                AlreadyFound := false;
-                for H in RankGroups[rank] do
-                    if not (IsomorphismGroups(G0, H) = fail) then
-                        AlreadyFound := true;
-                    fi;
-                od;
-                if not AlreadyFound then
-                    Add(RankGroups[rank], G0);
-                fi;
-
                 for Ex_in_G0 in copies_of_E_unique do
                     permEx := IsomorphismPermGroup(Ex_in_G0);
                     ImEx := Image(permEx, Ex_in_G0);
@@ -155,7 +143,3 @@ for qmpkdet in QMPKDET do
     AppendTo("rank_1_4_table"," ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
     Print(" ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
 od;
-
-# for i in [2..4] do
-#     Print("Number of groups of rank ", i, " = ", Length(RankGroups[i]), "\n");
-# od;
