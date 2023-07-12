@@ -118,7 +118,13 @@ for e in [2, 3, 4, 8]:
 # 6 is our prime
 final_params_irred.append([6, 1, 7, 1, 1 * 6 * 1])
 
-# for now just irreducible
+print("Irreducible Params")
 final_params_irred.sort()
 for params in final_params_irred:
+    print(params)
+print()
+
+print("Reducible Params")
+final_params_red.sort()
+for params in final_params_red:
     print(params)
