@@ -1,84 +1,68 @@
 # for now, e = 6 is its own file
 
-qm := 6;;
-p := 7;;
-k := 1;;
+# We are interested in G0 Primitive Solvable <= GL(6, 7);
+# By {TODO: Reference} we know that G0 takes the form G2 x G3 where
+#   G2 Primitive Solvable <= GL(2, 7);
+#   G3 Primitive Solvable <= GL(3, 7);
+# and x in this case is the Kronecker product
+
+# Change this to wherever you want to have the output file.
+CurrDir := "/home/spamakin/projects/research/classification";;
+# Begin Formatting file
+OutputFile := Concatenation(CurrDir, "/e6_out.g");;
+PrintTo(OutputFile, "");;
+AppendTo(OutputFile, "LineGrps := [ \n");;
 
 
-for et2 in ["-","+"] do
-    for et3 in ["-", "+"] do
+LinGrp2 := GL(2, 7);;
+LinGrp3 := GL(3, 7);;
+LinGrp2Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp2), Representative);;
 
-        NumGrps := 0;
-        MaxOrder := 0;
-        RankOfMax := 0;
-        groupDescriptions := [];
-        groupList := [];
+# We only care about G2, G3 up to conjugacy
+while Length(LinGrp2Cong) > 0 do
+    G2 := Remove(LinGrp2Cong);;
+    MaxRankSeen := 0;;
+    Gens2 := GeneratorsOfGroup(G2);;
 
-        GLpk := GL(qm, p^k);
-        GLp := GL(k * qm, p);
-        permpk := IsomorphismPermGroup(GLpk);
-        permp := IsomorphismPermGroup(GLp);
-        GLpkPerm := Image(permpk,GLpk);
-        GLpPerm := Image(permp,GLp);
+    LinGrp3Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp3), Representative);;
+    while Length(LinGrp3Cong) > 0 do
+        G3 := Remove(LinGrp3Cong);;
+        MaxRankSeen3 := 0;;
+        Gens3 := GeneratorsOfGroup(G3);;
 
-        Extraspecial1 := ExtraspecialGroup(8, et2);
-        Extraspecial2 := ExtraspecialGroup(27, et3);
-        Extraspecial := DirectProduct(Extraspecial1, Extraspecial2);
-        permex := IsomorphismPermGroup(Extraspecial);
-        ExtraspecialPerm := Image(permex, Extraspecial);
-        Print("(", et2, ",", et3, ") = ", StructureDescription(Extraspecial), "\n");
-
-        NE := Normalizer(GLpkPerm, ExtraspecialPerm);
-        N := Normalizer(GLpk,PreImage(permpk, NE));
-
-        for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
-            G0Perm := Image(permp, G0);
-            rank := Size(Orbits(G0Perm)) + 1;
-
-            # Requirements:
-            #   G0 Solvable
-            #   G0 Irreducible
-            #   If in B then G0 is primitive matrix group
-            #   1 < rank < 5
-            if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank = 5 then
-                copies_of_E := [];
-                for mono in List(IsomorphicSubgroups(G0, Extraspecial : findall:=false)) do
-                    Add(copies_of_E, Image(mono, Extraspecial));
-                od;
-
-                # Check if we have any copies of E
-                copies_of_E_unique := Unique(copies_of_E);
-                if Length(copies_of_E) = 0 then
-                    continue;
-                fi;
-                failed := false;
-                for H in groupList do
-                    if not (IsomorphismGroups(G0, H) = fail) then
-                        failed := true;
-                        # Print(StructureDescription(G0), " ISO TO ", StructureDescription(H), "\n\n");
-                    fi;
-                od;
-                if failed then
-                    continue;
-                fi;
-                Append(groupList, [G0]);
-                structDesc := StructureDescription(G0);
-                Append(groupDescriptions, [structDesc]);
-
-                for Ex_in_G0 in copies_of_E_unique do
-                    permEx := IsomorphismPermGroup(Ex_in_G0);
-                    ImEx := Image(permEx, Ex_in_G0);
-                    NumGrps := NumGrps + 1;
-                    if Order(G0) > MaxOrder then
-                        MaxOrder := Order(G0);
-                        RankOfMax := rank;
-                    fi;
-                    Print("        G_0 = ", structDesc, "\n");
-                    Print("        Order of G_0 = ", Order(G0), "\n");
-                    Print("        Rank = ", rank, "\n");
-                    Print("        E = ", StructureDescription(Ex_in_G0), "\n");
-                od;
-            fi;
+        # compute G via Kronecker Product
+        Gens := [];;
+        for Pair in Cartesian(Gens2, Gens3) do
+              Add(Gens, KroneckerProduct(Pair[1], Pair[2]));;
         od;
-    od;
+        G := Group(Gens);;
+
+        # Compute Rank
+        GPerm := Image(IsomorphismPermGroup(G), G);;
+        rank := Size(Orbits(GPerm)) + 1;;
+        MaxRankSeen := Maximum(MaxRankSeen, rank);;
+        if rank < 5 then
+            Print("!! FOUND RANK = ", rank, "\n");
+            AppendTo(OutputFile,"    ", G, ",\n");;
+        fi;
+
+        # Determine if we want to enumerate subgroups of G3
+        #   Subgroups of imprimitive groups are imprimitive
+        #   Rank must get larger as we check subgroups
+        if IsPrimitive(GPerm) and rank < 5 then
+            for Cong in List(ConjugacyClassesMaximalSubgroups(G3), Representative) do
+                Add(LinGrp3Cong, Cong);;
+            od;
+        fi;
+    od; 
+          
+    # Determine if we want to enumerate subgroups of G2
+    #   Rank must get larger as we check subgroups
+    if MaxRankSeen < 5 then
+        for Cong in List(ConjugacyClassesMaximalSubgroups(G2), Representative) do
+            Add(LinGrp3Cong, Cong);;
+        od;
+    fi;
 od;
+
+AppendTo(OutputFile, "];");;
