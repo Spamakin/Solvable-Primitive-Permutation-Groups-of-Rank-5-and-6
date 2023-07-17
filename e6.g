@@ -54,16 +54,20 @@ while Length(LinGrp2Cong) > 0 do
             AnyPrimitive3 := true;;
         fi;
 
-        # Add maximal subgroups if small enough
-        if SeenLowRank3 or AnyPrimitive3 then
+        # Add maximal subgroups of G if G = G2 Y G3 was ever primitive and if we saw anything of low rank
+        #   Subgroup of imprimitive is imprimitive
+        #   Subgroups can never decrease rank
+        if SeenLowRank3 and AnyPrimitive3 then
             for Cong in List(ConjugacyClassesMaximalSubgroups(G3), Representative) do
                 Add(LinGrp3Cong, Cong);;
             od;
         fi;
     od;
 
-    # Add maximal subgroups if small enough
-    if SeenLowRank2 or AnyPrimitive2 then
+    # Add maximal subgroups of G if G = G2 Y G3 was ever primitive and if we saw anything of low rank
+    #   Subgroup of imprimitive is imprimitive
+    #   Subgroups can never decrease rank
+    if SeenLowRank2 and AnyPrimitive2 then
         for Cong in List(ConjugacyClassesMaximalSubgroups(G2), Representative) do
             Add(LinGrp2Cong, Cong);;
         od;
