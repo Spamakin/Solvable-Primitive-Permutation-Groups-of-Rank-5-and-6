@@ -76,11 +76,7 @@ QMPKD := [ # only irreducible cases where e is a prime power
 
 # Change this to wherever you want to have the output file.
 CurrDir := "/home/spamakin/projects/research/classification";;
-# Begin Formatting file
-OutputFile := Concatenation(CurrDir, "/rank_5_out.g");;
-PrintTo(OutputFile, "");;
-AppendTo(OutputFile, "LineGrps := [ \n");;
-
+inc := 0;;
 
 for qmpkd in QMPKD do
     q := qmpkd[1];
@@ -88,8 +84,14 @@ for qmpkd in QMPKD do
     p := qmpkd[3];
     k := qmpkd[4];
     d := qmpkd[5];
+    inc := inc + 1
 
     for et in ["-","+"] do
+
+        # Begin Formatting file
+        OutputFile := Concatenation(CurrDir, "/lines", String(inc), et);;
+        PrintTo(OutputFile, "");;
+        AppendTo(OutputFile, "LineGrps := [ \n");;
 
         NumGrps := 0;
         MaxOrder := 0;
@@ -150,7 +152,7 @@ for qmpkd in QMPKD do
                 #   G0 Irreducible
                 #   If in B then G0 is primitive matrix group
                 #   1 < rank < 5
-                if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank = 5 then
+                if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
                     # Get number of subgroups of G0 isomorphic to E
 
                     copies_of_E := [];
@@ -186,22 +188,13 @@ for qmpkd in QMPKD do
                             RankOfMax := rank;
                         fi;
                         Print("!! FOUND RANK = ", rank, "\n");
-                        AppendTo(OutputFile,"    ", G, ",\n");;
-                        # Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                        # Print("        G_0 = ", structDesc, "\n");
-                        # Print("        Order of G_0 = ", Order(G0), "\n");
-                        # Print("        Rank = ", rank, "\n");
-                        # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
+                        AppendTo(OutputFile,"    ", G0, ",\n");;
                     od;
                 fi;
             od;
         od;
         NumGrps := Length(groupList);
         Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
-        # for desc in Unique(groupDescriptions) do
-        #     Print(desc, "\n");
-        # od;
-        # Print("\n");
     od;
 od;
 
