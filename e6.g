@@ -7,26 +7,26 @@
 # and x in this case is the Kronecker product
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/ec2-user/classification";;
+CurrDir := "/home/spamakin/projects/research/classification";;
 # Begin Formatting file
 OutputFile := Concatenation(CurrDir, "/e6_out.g");;
 PrintTo(OutputFile, "");;
 AppendTo(OutputFile, "LineGrps := [ \n");;
 
-
 LinGrp2 := GL(2, 7);;
-LinGrp2Cong := List(ConjugacyClassesSubgroups(LinGrp2), Representative);;
-Print("Computed Conjugacy Classes of Subgroups of GL(2, 7)\n");
+LinGrp2Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp2), Representative);;
 LinGrp3 := GL(3, 7);;
-LinGrp3Cong := List(ConjugacyClassesSubgroups(LinGrp3), Representative);;
-Print("Computed Conjugacy Classes of Subgroups of GL(3, 7)\n");
+iso := IsomorphismPermGroup(GL(6, 7));;
 
-for G2 in LinGrp2Cong do
-    if Size(G2) = 0 then continue; fi;
+while Length(LinGrp2Cong) > 0 do
+    G2 := Remove(LinGrp2Cong);;
     Gens2 := GeneratorsOfGroup(G2);;
-    for G3 in LinGrp3Cong do
-        if Size(G3) = 0 then continue; fi;
+    SeenLowRank2 := false;;
+    LinGrp3Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp3), Representative);;
+    while Length(LinGrp3Cong) > 0 do
+        G3 := Remove(LinGrp3Cong);;
         Gens3 := GeneratorsOfGroup(G3);;
+        SeenLowRank3 := false;;
         # compute G via Kronecker Product
         Gens := [];;
         for Pair in Cartesian(Gens2, Gens3) do
@@ -34,17 +34,34 @@ for G2 in LinGrp2Cong do
         od;
         if Size(Gens) = 0 then continue; fi;
         G := Group(Gens);;
-        
-	if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(7)) then
+        if ((7^6 - 1) / Order(G)) + 1 > 5 then continue; fi;
+
+	      if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(7)) then
             # Compute Rank
-            GPerm := Image(IsomorphismPermGroup(G), G);;
+            GPerm := Image(iso, G);;
             rank := Size(Orbits(GPerm)) + 1;;
-            if rank < 5 then
+            if rank <= 5 then
                 Print("!! FOUND RANK = ", rank, "\n");
                 AppendTo(OutputFile,"    ", G, ",\n");;
+                SeenLowRank2 := true;;
+                SeenLowRank3 := true;;
             fi;
-	fi;
+	      fi;
+
+        # Add maximal subgroups if small enough
+        if SeenLowRank3 then
+            for Cong in List(ConjugacyClassesMaximalSubgroups(G3), Representative) do
+                Add(LinGrp3Cong, Cong);;
+            od;
+        fi;
     od;
+
+    # Add maximal subgroups if small enough
+    if SeenLowRank2 then
+        for Cong in List(ConjugacyClassesMaximalSubgroups(G2), Representative) do
+            Add(LinGrp2Cong, Cong);;
+        od;
+    fi;
 od;
 
 AppendTo(OutputFile, "];");;
