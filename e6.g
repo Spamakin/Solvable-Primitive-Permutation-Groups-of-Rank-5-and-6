@@ -22,6 +22,7 @@ while Length(LinGrp2Cong) > 0 do
     G2 := Remove(LinGrp2Cong);;
     Gens2 := GeneratorsOfGroup(G2);;
     SeenLowRank2 := false;;
+    AnyPrimitive2 := false;;
     LinGrp3Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp3), Representative);;
     while Length(LinGrp3Cong) > 0 do
         G3 := Remove(LinGrp3Cong);;
@@ -48,8 +49,13 @@ while Length(LinGrp2Cong) > 0 do
             fi;
 	      fi;
 
+        if IsPrimitiveMatrixGroup(G, GF(7)) then
+            AnyPrimitive2 := true;;
+            AnyPrimitive3 := true;;
+        fi;
+
         # Add maximal subgroups if small enough
-        if SeenLowRank3 then
+        if SeenLowRank3 or AnyPrimitive3 then
             for Cong in List(ConjugacyClassesMaximalSubgroups(G3), Representative) do
                 Add(LinGrp3Cong, Cong);;
             od;
@@ -57,7 +63,7 @@ while Length(LinGrp2Cong) > 0 do
     od;
 
     # Add maximal subgroups if small enough
-    if SeenLowRank2 then
+    if SeenLowRank2 or AnyPrimitive2 then
         for Cong in List(ConjugacyClassesMaximalSubgroups(G2), Representative) do
             Add(LinGrp2Cong, Cong);;
         od;
