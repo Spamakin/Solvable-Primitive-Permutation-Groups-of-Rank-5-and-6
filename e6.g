@@ -14,8 +14,8 @@ PrintTo(OutputFile, "");;
 AppendTo(OutputFile, "LineGrps := [ \n");;
 
 LinGrp2 := GL(2, 7);;
-LinGrp2Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp2), Representative);;
 LinGrp3 := GL(3, 7);;
+LinGrp2Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp2), Representative);;
 iso := IsomorphismPermGroup(GL(6, 7));;
 
 while Length(LinGrp2Cong) > 0 do
