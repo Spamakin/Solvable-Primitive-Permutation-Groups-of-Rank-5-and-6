@@ -1,14 +1,5 @@
 SetRecursionTrapInterval(10000);
 
-# q := 2;;
-# m := 1;;
-# p := 83;;
-# k := 1;;
-# d := 2;;
-# et := "-";;
-
-# Read("/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank-4-gps/Line29grps.g");
-
 QMPKD := [ # only irreducible cases where e is a prime power
     # [2,1,3,1,2],
     # [2,1,3,2,2],
@@ -143,9 +134,15 @@ for qmpkd in QMPKD do
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
             # TODO: Rewrite into own function + trim using maximal subgroups
             # Conjugacy suffices since conjugate groups will have the same orbit structure
-            for G0 in List((ConjugacyClassesSubgroups(N)), Representative) do
+            CongClassN := List((ConjugacyClassesSubgroups(N)), Representative);
+            while Length(CongClassN) > 0 do
+                G0 := Remove(CongClassN);
+                if ((p^d - 1) / Order(G0)) + 1 > 5 then
+                    continue;
+                fi;
                 G0Perm := Image(permp, G0);
                 rank := Size(Orbits(G0Perm)) + 1;
+                FoundLowRank := false;
 
                 # Requirements:
                 #   G0 Solvable
@@ -189,6 +186,16 @@ for qmpkd in QMPKD do
                         fi;
                         Print("!! FOUND RANK = ", rank, "\n");
                         AppendTo(OutputFile,"    ", G0, ",\n");;
+                        FoundLowRank := true;
+                    od;
+                fi;
+
+                # Add maximal subgroups of G0 is primitive and if we saw anything of low rank
+                #   Subgroup of imprimitive is imprimitive
+                #   Subgroups can never decrease rank
+                if FoundLowRank and IsPrimitiveMatrixGroup(G0, GP(p)) then
+                    for Cong in ConjugacyClassesMaximalSubgroups(G0) do
+                        Add(CongClassN, Cong);
                     od;
                 fi;
             od;
