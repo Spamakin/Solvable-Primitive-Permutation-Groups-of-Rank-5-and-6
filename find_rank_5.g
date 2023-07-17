@@ -10,68 +10,76 @@ SetRecursionTrapInterval(10000);
 # Read("/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank-4-gps/Line29grps.g");
 
 QMPKD := [ # only irreducible cases where e is a prime power
-    [2,1,3,1,2],
-    [2,1,3,2,2],
-    [2,1,3,2,4],
-    [2,1,3,3,2],
-    [2,1,3,3,6],
-    [2,1,3,4,2],
-    [2,1,3,4,4],
-    [2,1,3,4,8],
-    [2,1,3,5,10],
-    [2,1,5,1,2],
-    [2,1,5,2,2],
-    [2,1,5,2,4],
-    [2,1,5,3,6],
-    [2,1,7,1,2],
-    [2,1,7,2,2],
-    [2,1,7,2,4],
-    [2,1,11,1,2],
-    [2,1,11,2,4],
-    [2,1,13,1,2],
-    [2,1,13,2,4],
-    [2,1,17,1,2],
-    [2,1,19,1,2],
-    [2,1,23,1,2],
-    [2,1,29,1,2],
-    [2,1,31,1,2],
-    [2,1,37,1,2],
-    [2,1,41,1,2],
-    [2,1,43,1,2],
-    [2,1,47,1,2],
-    [2,1,53,1,2],
-    [2,1,59,1,2],
-    [2,1,61,1,2],
-    [2,1,67,1,2],
-    [2,1,71,1,2],
-    [2,1,73,1,2],
-    [2,1,79,1,2],
-    [2,1,83,1,2],
-    [2,1,89,1,2],
-    [2,2,3,1,4],
-    [2,2,3,2,4],
-    [2,2,3,2,8],
-    [2,2,5,1,4],
-    [2,2,7,1,4],
-    [2,2,11,1,4],
-    [2,2,13,1,4],
+    # [2,1,3,1,2],
+    # [2,1,3,2,2],
+    # [2,1,3,2,4],
+    # [2,1,3,3,2],
+    # [2,1,3,3,6],
+    # [2,1,3,4,2],
+    # [2,1,3,4,4],
+    # [2,1,3,4,8],
+    # [2,1,3,5,10],
+    # [2,1,5,1,2],
+    # [2,1,5,2,2],
+    # [2,1,5,2,4],
+    # [2,1,5,3,6],
+    # [2,1,7,1,2],
+    # [2,1,7,2,2],
+    # [2,1,7,2,4],
+    # [2,1,11,1,2],
+    # [2,1,11,2,4],
+    # [2,1,13,1,2],
+    # [2,1,13,2,4],
+    # [2,1,17,1,2],
+    # [2,1,19,1,2],
+    # [2,1,23,1,2],
+    # [2,1,29,1,2],
+    # [2,1,31,1,2],
+    # [2,1,37,1,2],
+    # [2,1,41,1,2],
+    # [2,1,43,1,2],
+    # [2,1,47,1,2],
+    # [2,1,53,1,2],
+    # [2,1,59,1,2],
+    # [2,1,61,1,2],
+    # [2,1,67,1,2],
+    # [2,1,71,1,2],
+    # [2,1,73,1,2],
+    # [2,1,79,1,2],
+    # [2,1,83,1,2],
+    # [2,1,89,1,2],
+    # [2,2,3,1,4],
+    # [2,2,3,2,4],
+    # [2,2,3,2,8],
+    # [2,2,5,1,4],
+    # [2,2,7,1,4],
+    # [2,2,11,1,4],
+    # [2,2,13,1,4],
     [2,3,3,1,8],
     [2,3,5,1,8],
     [2,4,3,1,16],
-    [3,1,2,2,3],
-    [3,1,2,2,6],
-    [3,1,2,4,3],
-    [3,1,2,4,6],
-    [3,1,2,4,12],
+    # [3,1,2,2,3],
+    # [3,1,2,2,6],
+    # [3,1,2,4,3],
+    # [3,1,2,4,6],
+    # [3,1,2,4,12],
     [3,1,2,6,18],
-    [3,1,5,2,3],
-    [3,1,5,2,6],
-    [3,1,7,1,3],
-    [3,1,13,1,3],
-    [3,1,19,1,3],
-    [3,2,2,2,9],
+    # [3,1,5,2,3],
+    # [3,1,5,2,6],
+    # [3,1,7,1,3],
+    # [3,1,13,1,3],
+    # [3,1,19,1,3],
+    # [3,2,2,2,9],
     [3,2,2,2,18]
 ];;
+
+
+# Change this to wherever you want to have the output file.
+CurrDir := "/home/spamakin/projects/research/classification";;
+# Begin Formatting file
+OutputFile := Concatenation(CurrDir, "/rank_5_out.g");;
+PrintTo(OutputFile, "");;
+AppendTo(OutputFile, "LineGrps := [ \n");;
 
 
 for qmpkd in QMPKD do
@@ -81,8 +89,6 @@ for qmpkd in QMPKD do
     k := qmpkd[4];
     d := qmpkd[5];
 
-    # if k <> 1 then continue; fi;
-    # if d <> 2 then continue; fi; # it seems to break for d != 2 right now
     for et in ["-","+"] do
 
         NumGrps := 0;
@@ -179,16 +185,18 @@ for qmpkd in QMPKD do
                             MaxOrder := Order(G0);
                             RankOfMax := rank;
                         fi;
-                        Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                        Print("        G_0 = ", structDesc, "\n");
-                        Print("        Order of G_0 = ", Order(G0), "\n");
-                        Print("        Rank = ", rank, "\n");
-                        Print("        E = ", StructureDescription(Ex_in_G0), "\n");
+                        Print("!! FOUND RANK = ", rank, "\n");
+                        AppendTo(OutputFile,"    ", G, ",\n");;
+                        # Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
+                        # Print("        G_0 = ", structDesc, "\n");
+                        # Print("        Order of G_0 = ", Order(G0), "\n");
+                        # Print("        Rank = ", rank, "\n");
+                        # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
                     od;
                 fi;
             od;
         od;
-        NumGrps := Length(Unique(groupDescriptions));
+        NumGrps := Length(groupList);
         Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
         # for desc in Unique(groupDescriptions) do
         #     Print(desc, "\n");
@@ -196,3 +204,5 @@ for qmpkd in QMPKD do
         # Print("\n");
     od;
 od;
+
+AppendTo(OutputFile, "];");;
