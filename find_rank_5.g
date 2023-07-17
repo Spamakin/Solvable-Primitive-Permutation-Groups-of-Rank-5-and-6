@@ -46,9 +46,9 @@ QMPKD := [ # only irreducible cases where e is a prime power
     # [2,2,7,1,4],
     # [2,2,11,1,4],
     # [2,2,13,1,4],
-    [2,3,3,1,8],
-    [2,3,5,1,8],
-    [2,4,3,1,16],
+    # [2,3,3,1,8],
+    # [2,3,5,1,8],
+    # [2,4,3,1,16],
     # [3,1,2,2,3],
     # [3,1,2,2,6],
     # [3,1,2,4,3],
@@ -61,12 +61,12 @@ QMPKD := [ # only irreducible cases where e is a prime power
     # [3,1,13,1,3],
     # [3,1,19,1,3],
     # [3,2,2,2,9],
-    [3,2,2,2,18]
+    # [3,2,2,2,18]
 ];;
 
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/spamakin/projects/research/classification";;
+CurrDir := "/home/ec2-user/classification/results";;
 inc := 0;;
 
 for qmpkd in QMPKD do
@@ -75,10 +75,10 @@ for qmpkd in QMPKD do
     p := qmpkd[3];
     k := qmpkd[4];
     d := qmpkd[5];
-    inc := inc + 1
+    inc := inc + 1;
 
     for et in ["-","+"] do
-
+        Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
         # Begin Formatting file
         OutputFile := Concatenation(CurrDir, "/lines", String(inc), et);;
         PrintTo(OutputFile, "");;
@@ -105,7 +105,6 @@ for qmpkd in QMPKD do
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        # Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
         # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
         for ExCand in GLpkSubgroups do
@@ -136,6 +135,7 @@ for qmpkd in QMPKD do
             # Conjugacy suffices since conjugate groups will have the same orbit structure
             CongClassN := List((ConjugacyClassesSubgroups(N)), Representative);
             while Length(CongClassN) > 0 do
+		Print("Number of Conjugacy Classes Left = ", Length(CongClassN), "\n");
                 G0 := Remove(CongClassN);
                 if ((p^d - 1) / Order(G0)) + 1 > 5 then
                     continue;
