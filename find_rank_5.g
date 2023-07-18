@@ -103,7 +103,7 @@ for lqmpkd in LineQMPKD do
 
         NumGrps := 0;
         MaxOrder := 0;
-        RankOfMax := 0so that;
+        RankOfMax := 0;
         groupDescriptions := [];
         groupList := [];
 
@@ -115,7 +115,7 @@ for lqmpkd in LineQMPKD do
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        Print("  Constructed Candidate Subgroups Isomorphic to E\n")
+        Print("  Constructed Candidate Subgroups Isomorphic to E\n");
 
         # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
@@ -153,7 +153,7 @@ for lqmpkd in LineQMPKD do
             Total := Length(CongClassesN);
             Curr := 0;
             for G0 in CongClassesN do
-                Curr += 1;
+                Curr := Curr + 1;
                 Print("    Checking Group ", Curr, " / ", Total, "\n");
 
                 G0Perm := Image(permp, G0);
