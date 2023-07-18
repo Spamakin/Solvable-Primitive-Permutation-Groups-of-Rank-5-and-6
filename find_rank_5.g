@@ -46,27 +46,27 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     [43, 2, 2, 7, 1, 4],
     [44, 2, 2, 11, 1, 4],
     [45, 2, 2, 13, 1, 4],
-    [46, 2, 3, 3, 1, 8],
-    [47, 2, 3, 5, 1, 8],
-    [48, 2, 4, 3, 1, 16],
+    # [46, 2, 3, 3, 1, 8],
+    # [47, 2, 3, 5, 1, 8],
+    # [48, 2, 4, 3, 1, 16],
     [49, 3, 1, 2, 2, 3],
     [50, 3, 1, 2, 2, 6],
     [51, 3, 1, 2, 4, 3],
     [52, 3, 1, 2, 4, 6],
     [53, 3, 1, 2, 4, 12],
-    [54, 3, 1, 2, 6, 18],
+    # [54, 3, 1, 2, 6, 18],
     [55, 3, 1, 5, 2, 3],
     [56, 3, 1, 5, 2, 6],
     [57, 3, 1, 7, 1, 3],
     [58, 3, 1, 13, 1, 3],
     [59, 3, 1, 19, 1, 3],
-    [60, 3, 2, 2, 2, 9],
-    [61, 3, 2, 2, 2, 18],
+    # [60, 3, 2, 2, 2, 9],
+    # [61, 3, 2, 2, 2, 18],
 ];;
 
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/spamakin/projects/research/classification";;
+CurrDir := "/home/ec2-user/classification/results";;
 inc := 0;;
 
 for lqmpkd in LineQMPKD do
@@ -85,8 +85,6 @@ for lqmpkd in LineQMPKD do
     GLpkPerm := Image(permpk,GLpk);
     GLpPerm := Image(permp,GLp);
     Print("Computed Permutation Representations of GL(", String(q^m), ", ", String(p^k), ") and GL(", String(k * q^m), ", ", String(p), ")\n");
-    GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
-    Print("Computed Sylow Subgroups");
 
     for et in ["-","+"] do
         Print("  Computations for Extraspecial Group of type ", et, "\n");
@@ -105,11 +103,12 @@ for lqmpkd in LineQMPKD do
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
 
         # Identify subgroups of GL(q^m, p^k) isomorphic to E
-        CopiesOfE := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
-        CopiesOfE := Filtered(CopiesOfE,x->IdGroup(x) = IdGroup(Extraspecial));
-        Print("  Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(CopiesOfE), "\n");
+        GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
+        GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
+        GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
+        # Print("  Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n");
         # FIXME: sometimes this filtering is non-unique, why?
-        for ExCand in CopiesOfE do
+        for ExCand in GLpkSubgroups do
             # Calculate normalizer of ExCand in GL(q^m,p^k)
             NE := Normalizer(GLpkPerm, ExCand);
             Print("    Computed NE\n");
@@ -137,11 +136,11 @@ for lqmpkd in LineQMPKD do
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
             # TODO: Rewrite into own function + trim using maximal subgroups
             # Conjugacy suffices since conjugate groups will have the same orbit structure
-            CongClassN := MaximalSubgroupClassReps(N);
+            CongClassN := List(ConjugacyClassesMaximalSubgroups(N), Representative);
             while Length(CongClassN) > 0 do
                 Print("    Number of Maximal Subgroups Remaining = ", Length(CongClassN), "\n");
                 G0 := Remove(CongClassN);
-                if Float((p^d - 1) / Order(G0)) + 1 > 5.0 then
+                if Float((p^d - 1) / Size(G0)) + 1 > 5.0 then
                     continue;
                 fi;
                 G0Perm := Image(permp, G0);
@@ -183,11 +182,11 @@ for lqmpkd in LineQMPKD do
                         permEx := IsomorphismPermGroup(Ex_in_G0);
                         ImEx := Image(permEx, Ex_in_G0);
                         NumGrps := NumGrps + 1;
-                        if Order(G0) > MaxOrder then
-                            MaxOrder := Order(G0);
+                        if Size(G0) > MaxOrder then
+                            MaxOrder := Size(G0);
                             RankOfMax := rank;
                         fi;
-                        Print("!! FOUND RANK = ", rank, "\n");
+                        Print("    !! FOUND RANK = ", rank, "\n");
                         AppendTo(OutputFile,"    ", G0, ",\n");;
                         FoundLowRank := true;
                     od;
@@ -196,7 +195,7 @@ for lqmpkd in LineQMPKD do
                 # Add maximal subgroups of G0 is primitive and if we saw anything of low rank
                 #   Subgroup of imprimitive is imprimitive
                 #   Subgroups can never decrease rank
-                if FoundLowRank and IsPrimitiveMatrixGroup(G0, GP(p)) then
+                if FoundLowRank and IsPrimitiveMatrixGroup(G0, GF(p)) then
                     for Cong in ConjugacyClassesMaximalSubgroups(G0) do
                         Add(CongClassN, Cong);
                     od;
