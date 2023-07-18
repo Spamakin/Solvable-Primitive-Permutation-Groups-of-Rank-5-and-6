@@ -196,7 +196,7 @@ for lqmpkd in LineQMPKD do
                 #   Subgroup of imprimitive is imprimitive
                 #   Subgroups can never decrease rank
                 if FoundLowRank and IsPrimitiveMatrixGroup(G0, GF(p)) then
-                    for Cong in ConjugacyClassesMaximalSubgroups(G0) do
+                    for Cong in List(ConjugacyClassesMaximalSubgroups(G0), Representative) do
                         Add(CongClassN, Cong);
                     od;
                 fi;
@@ -204,7 +204,8 @@ for lqmpkd in LineQMPKD do
         od;
         NumGrps := Length(groupList);
         Print("    ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
+    
+    AppendTo(OutputFile, "];\n\n");;
     od;
 od;
 
-AppendTo(OutputFile, "];");;
