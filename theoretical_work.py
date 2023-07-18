@@ -74,8 +74,7 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
 final_params_irred = []
 final_params_red = []
 
-# e != 9, 16 via Theorem 64 in Overleaf
-for e in [2, 3, 4, 8]:
+for e in [2, 3, 4, 8, 9, 16]:
     if e % 2 == 0:
         ep = 2  # prime part of e
         w = 3  # |W|
@@ -100,7 +99,7 @@ for e in [2, 3, 4, 8]:
                 if rankLowerBound <= 5:
                     numSuccesses += 1
                     rankLowerBound = math.ceil(rankLowerBound)
-                    q, m = powerOfPrime(e)
+                    q, m = powerOfPrime(e) # e = q^m
                     if b == 1:
                         final_params_irred.append([q, m, p, k, dim * e * b])
                     else:
