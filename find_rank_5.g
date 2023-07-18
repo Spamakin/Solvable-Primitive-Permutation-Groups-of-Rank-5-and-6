@@ -62,7 +62,6 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     [59, 3, 1, 19, 1, 3],
     [60, 3, 2, 2, 2, 9],
     [61, 3, 2, 2, 2, 18],
-    [62, 6, 1, 7, 1, 6],
 ];;
 
 
