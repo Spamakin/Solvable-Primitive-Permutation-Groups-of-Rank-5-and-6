@@ -1,6 +1,6 @@
 SetRecursionTrapInterval(10000);
 
-QMPKD := [ # only irreducible cases where e is a prime power
+LineQMPKD := [ # only irreducible cases where e is a prime power
     # [2,1,3,1,2],
     # [2,1,3,2,2],
     # [2,1,3,2,4],
@@ -46,9 +46,9 @@ QMPKD := [ # only irreducible cases where e is a prime power
     # [2,2,7,1,4],
     # [2,2,11,1,4],
     # [2,2,13,1,4],
-    # [2,3,3,1,8],
-    # [2,3,5,1,8],
-    # [2,4,3,1,16],
+    [2,3,3,1,8],
+    [2,3,5,1,8],
+    [2,4,3,1,16],
     # [3,1,2,2,3],
     # [3,1,2,2,6],
     # [3,1,2,4,3],
@@ -61,26 +61,37 @@ QMPKD := [ # only irreducible cases where e is a prime power
     # [3,1,13,1,3],
     # [3,1,19,1,3],
     # [3,2,2,2,9],
-    # [3,2,2,2,18]
+    [3,2,2,2,18]
 ];;
 
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/ec2-user/classification/results";;
+CurrDir := "/home/spamakin/projects/research/classification";;
 inc := 0;;
 
-for qmpkd in QMPKD do
-    q := qmpkd[1];
-    m := qmpkd[2];
-    p := qmpkd[3];
-    k := qmpkd[4];
-    d := qmpkd[5];
-    inc := inc + 1;
+for lqmpkd in LineQMPKD do
+    line := lqmpkd[1];
+    q := qmpkd[2];
+    m := qmpkd[3];
+    p := qmpkd[4];
+    k := qmpkd[5];
+    d := qmpkd[6];
+    Print("q =", String(q), ", m =", String(m), ", p =", String(p), ", k =", String(k), ", d =", String(d), "\n");
+
+    GLpk := GL(q^m, p^k);
+    GLp := GL(k * q^m, p);
+    permpk := IsomorphismPermGroup(GLpk);
+    permp := IsomorphismPermGroup(GLp);
+    GLpkPerm := Image(permpk,GLpk);
+    GLpPerm := Image(permp,GLp);
+    Print("Computed Permutation Representations of GL(", String(q^m), ", ", String(p^k), ") and GL(", String(k * q^m), ", ", String(p), ")\n");
+    GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
+    Print("Computed Sylow Subgroups");
 
     for et in ["-","+"] do
-        Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
+        Print("  Computations for Extraspecial Group of type ", et, "\n");
         # Begin Formatting file
-        OutputFile := Concatenation(CurrDir, "/lines", String(inc), et);;
+        OutputFile := Concatenation(CurrDir, "/lines", String(line), et, ".g");;
         PrintTo(OutputFile, "");;
         AppendTo(OutputFile, "LineGrps := [ \n");;
 
@@ -90,26 +101,18 @@ for qmpkd in QMPKD do
         groupDescriptions := [];
         groupList := [];
 
-        GLpk := GL(q^m, p^k);
-        GLp := GL(k * q^m, p);
-        permpk := IsomorphismPermGroup(GLpk);
-        permp := IsomorphismPermGroup(GLp);
-        GLpkPerm := Image(permpk,GLpk);
-        GLpPerm := Image(permp,GLp);
-
         # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
 
         # Identify subgroups of GL(q^m, p^k) isomorphic to E
-        # There may be more than 1 (?)
-        GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
-        GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
-        GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
+        CopiesOfE := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
+        CopiesOfE := Filtered(CopiesOfE,x->IdGroup(x) = IdGroup(Extraspecial));
+        Print("  Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(CopiesOfE), "\n");
         # FIXME: sometimes this filtering is non-unique, why?
-        for ExCand in GLpkSubgroups do
+        for ExCand in CopiesOfE do
             # Calculate normalizer of ExCand in GL(q^m,p^k)
             NE := Normalizer(GLpkPerm, ExCand);
+            Print("    Computed NE\n");
 
             if k = 1 then
                 # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
@@ -129,15 +132,16 @@ for qmpkd in QMPKD do
                 # Calculate its normalizer
                 N := Normalizer(GLp, NEp);
             fi;
+            Print("    Computed N\n");
 
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
             # TODO: Rewrite into own function + trim using maximal subgroups
             # Conjugacy suffices since conjugate groups will have the same orbit structure
-            CongClassN := List((ConjugacyClassesSubgroups(N)), Representative);
+            CongClassN := MaximalSubgroupClassReps(N);
             while Length(CongClassN) > 0 do
-		Print("Number of Conjugacy Classes Left = ", Length(CongClassN), "\n");
+                Print("    Number of Maximal Subgroups Remaining = ", Length(CongClassN), "\n");
                 G0 := Remove(CongClassN);
-                if ((p^d - 1) / Order(G0)) + 1 > 5 then
+                if Ceil(Float((p^d - 1) / Order(G0))) + 1 > 5.0 then
                     continue;
                 fi;
                 G0Perm := Image(permp, G0);
@@ -148,7 +152,7 @@ for qmpkd in QMPKD do
                 #   G0 Solvable
                 #   G0 Irreducible
                 #   If in B then G0 is primitive matrix group
-                #   1 < rank < 5
+                #   rank <= 5
                 if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
                     # Get number of subgroups of G0 isomorphic to E
 
@@ -166,7 +170,6 @@ for qmpkd in QMPKD do
                     for H in groupList do
                         if not (IsomorphismGroups(G0, H) = fail) then
                             failed := true;
-                            # Print(StructureDescription(G0), " ISO TO ", StructureDescription(H), "\n\n");
                         fi;
                     od;
                     if failed then
@@ -201,7 +204,7 @@ for qmpkd in QMPKD do
             od;
         od;
         NumGrps := Length(groupList);
-        Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
+        Print("    ", q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
     od;
 od;
 

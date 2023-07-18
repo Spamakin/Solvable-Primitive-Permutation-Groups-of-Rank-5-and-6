@@ -120,11 +120,11 @@ final_params_irred.append([6, 1, 7, 1, 1 * 6 * 1])
 
 print("Irreducible Params")
 final_params_irred.sort()
-for params in final_params_irred:
-    print(params)
+for i, params in enumerate(final_params_irred):
+    print([i + 1] + params)
 print()
 
 print("Reducible Params")
 final_params_red.sort()
-for params in final_params_red:
-    print(params)
+for i, params in enumerate(final_params_red):
+    print([i + 1 + len(final_params_irred)] + params)
