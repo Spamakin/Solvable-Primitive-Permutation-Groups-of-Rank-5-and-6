@@ -71,11 +71,11 @@ inc := 0;;
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
-    q := qmpkd[2];
-    m := qmpkd[3];
-    p := qmpkd[4];
-    k := qmpkd[5];
-    d := qmpkd[6];
+    q := lqmpkd[2];
+    m := lqmpkd[3];
+    p := lqmpkd[4];
+    k := lqmpkd[5];
+    d := lqmpkd[6];
     Print("q =", String(q), ", m =", String(m), ", p =", String(p), ", k =", String(k), ", d =", String(d), "\n");
 
     GLpk := GL(q^m, p^k);
