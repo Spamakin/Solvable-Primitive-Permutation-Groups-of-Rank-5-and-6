@@ -16,16 +16,22 @@ AppendTo(OutputFile, "Line62Grps := [ \n");;
 LinGrp2 := GL(2, 7);;
 LinGrp3 := GL(3, 7);;
 LinGrp2Cong := List(ConjugacyClassesSubgroups(LinGrp2), Representative);;
+LinGrp2Cong := Filtered(LinGrp2Cong, G2 -> IsSolvable(G2));;
+LinGrp2Cong := Filtered(LinGrp2Cong, G2 -> IsPrimitiveMatrixGroup(G2, GF(7)));;
+Print("Computed Subgroup Conjugacy Classes of GL(2, 7)\n");
 LinGrp3Cong := List(ConjugacyClassesSubgroups(LinGrp3), Representative);;
+LinGrp3Cong := Filtered(LinGrp3Cong, G3 -> IsSolvable(G3));;
+LinGrp3Cong := Filtered(LinGrp3Cong, G3 -> IsPrimitiveMatrixGroup(G3, GF(7)));;
+Print("Computed Subgroup Conjugacy Classes of GL(3, 7)\n");
 iso := IsomorphismPermGroup(GL(6, 7));;
 Total := Length(LinGrp2Cong) * Length(LinGrp3Cong);;
 Curr := 0;;
 
 for G2 in LinGrp2Cong do
     Gens2 := GeneratorsOfGroup(G2);;
-    for G3 in LinGrp2Cong do
+    for G3 in LinGrp3Cong do
         Curr := Curr + 1;;
-        Print("Computing Group ", Curr, " / ", Total, "\n");
+        Print("Checking Group ", Curr, " / ", Total, "\n");
         Gens3 := GeneratorsOfGroup(G3);;
 
         # Compute G via Kronecker Product
@@ -38,7 +44,7 @@ for G2 in LinGrp2Cong do
 
         if ((7^6 - 1) / Order(G)) + 1 > 5 then continue; fi;
 
-	      if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(7)) then
+	if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(7)) then
             # Compute Rank
             GPerm := Image(iso, G);;
             rank := Size(Orbits(GPerm)) + 1;;
@@ -52,4 +58,4 @@ for G2 in LinGrp2Cong do
     od;
 od;
 
-AppendTo(OutputFile, "];");;
+AppendTo(OutputFile, "];\n\n");;
