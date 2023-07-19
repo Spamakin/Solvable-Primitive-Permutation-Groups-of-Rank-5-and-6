@@ -53,8 +53,8 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     # [43, 2, 2, 7, 1, 4],
     # [44, 2, 2, 11, 1, 4],
     # [45, 2, 2, 13, 1, 4],
-    [46, 2, 3, 3, 1, 8],
-    # [47, 2, 3, 5, 1, 8],
+    # [46, 2, 3, 3, 1, 8],
+    [47, 2, 3, 5, 1, 8],
     # [48, 2, 4, 3, 1, 16],
     # [49, 3, 1, 2, 2, 3],
     # [50, 3, 1, 2, 2, 6],
@@ -79,6 +79,7 @@ for lqmpkd in LineQMPKD do
     k := lqmpkd[5];
     d := lqmpkd[6];
 
+    Print("Computing Permutation Representations for GL(q^m, p^k) and GL(k * q^m, p)...\n");
     GLpk := GL(q^m, p^k);
     GLp := GL(k * q^m, p);
     permpk := IsomorphismPermGroup(GLpk);
@@ -88,8 +89,8 @@ for lqmpkd in LineQMPKD do
     Print("Computed Permutation Representations for GL(q^m, p^k) and GL(k * q^m, p)\n");
 
     # for et in ["+"] do
-    # for et in ["-"] do
-    for et in ["-","+"] do
+    for et in ["-"] do
+    # for et in ["-","+"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
         OutputFile := Concatenation("/home/ec2-user/classification/results/line", String(line), et, ".g");;
@@ -109,7 +110,8 @@ for lqmpkd in LineQMPKD do
 
         # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
-
+	
+	Print("  Searching for Copies of E...\n");
         # Identify subgroups of GL(q^m, p^k) isomorphic to E
         # There may be more than 1 (?)
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
