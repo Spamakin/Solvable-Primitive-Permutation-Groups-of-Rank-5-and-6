@@ -1,74 +1,16 @@
 SetRecursionTrapInterval(10000);
 
+# Minimal Cases where this breaks
+# Following Notation of [HY23] - [HY23] - Regular orbits of finite primitive solvable groups,the final classification
+# [Line Num, q, m, p, k , d]
+# e := q^m
+# k := a
 LineQMPKD := [ # only b=1 cases where e is a prime power
     [1, 2, 1, 3, 1, 2],
-    [2, 2, 1, 3, 2, 2],
-    # [3, 2, 1, 3, 2, 4],
-    # [4, 2, 1, 3, 3, 2],
-    # [5, 2, 1, 3, 3, 6],
-    # [6, 2, 1, 3, 4, 2],
-    # [7, 2, 1, 3, 4, 4],
-    # [8, 2, 1, 3, 4, 8],
-    # [9, 2, 1, 3, 5, 10],
-    # [10, 2, 1, 5, 1, 2],
-    # [11, 2, 1, 5, 2, 2],
-    # [12, 2, 1, 5, 2, 4],
-    # [13, 2, 1, 5, 3, 6],
-    # [14, 2, 1, 7, 1, 2],
-    # [15, 2, 1, 7, 2, 2],
-    # [16, 2, 1, 7, 2, 4],
-    # [17, 2, 1, 11, 1, 2],
-    # [18, 2, 1, 11, 2, 4],
-    # [19, 2, 1, 13, 1, 2],
-    # [20, 2, 1, 13, 2, 4],
-    # [21, 2, 1, 17, 1, 2],
-    # [22, 2, 1, 19, 1, 2],
-    # [23, 2, 1, 23, 1, 2],
-    # [24, 2, 1, 29, 1, 2],
-    # [25, 2, 1, 31, 1, 2],
-    # [26, 2, 1, 37, 1, 2],
-    # [27, 2, 1, 41, 1, 2],
-    # [28, 2, 1, 43, 1, 2],
-    # [29, 2, 1, 47, 1, 2],
-    # [30, 2, 1, 53, 1, 2],
-    # [31, 2, 1, 59, 1, 2],
-    # [32, 2, 1, 61, 1, 2],
-    # [33, 2, 1, 67, 1, 2],
-    # [34, 2, 1, 71, 1, 2],
-    # [35, 2, 1, 73, 1, 2],
-    # [36, 2, 1, 79, 1, 2],
-    # [37, 2, 1, 83, 1, 2],
-    # [38, 2, 1, 89, 1, 2],
-    # [39, 2, 2, 3, 1, 4],
-    # [40, 2, 2, 3, 2, 4],
-    # [41, 2, 2, 3, 2, 8],
-    # [42, 2, 2, 5, 1, 4],
-    # [43, 2, 2, 7, 1, 4],
-    # [44, 2, 2, 11, 1, 4],
-    # [45, 2, 2, 13, 1, 4],
-    # [46, 2, 3, 3, 1, 8],
-    # [47, 2, 3, 5, 1, 8],
-    # [48, 2, 4, 3, 1, 16],
-    # [49, 3, 1, 2, 2, 3],
-    # [50, 3, 1, 2, 2, 6],
-    # [51, 3, 1, 2, 4, 3],
-    # [52, 3, 1, 2, 4, 6],
-    # [53, 3, 1, 2, 4, 12],
-    # [54, 3, 1, 2, 6, 18],
-    # [55, 3, 1, 5, 2, 3],
-    # [56, 3, 1, 5, 2, 6],
-    # [57, 3, 1, 7, 1, 3],
-    # [58, 3, 1, 13, 1, 3],
-    # [59, 3, 1, 19, 1, 3],
-    # [60, 3, 2, 2, 2, 9],
-    # [61, 3, 2, 2, 2, 18],
+    # [2, 2, 1, 3, 2, 2],
 ];;
 
-
-# Change this to wherever you want to have the output file.
-# CurrDir := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/";;
-# Begin Formatting file
-
+Print("\nStarting Unoptimized Version we look at every subgroup up to conjugacy\n\n");
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
@@ -78,16 +20,14 @@ for lqmpkd in LineQMPKD do
     k := lqmpkd[5];
     d := lqmpkd[6];
 
+    # Type of Extraspecial Group
     for et in ["-","+"] do
 
-        # OutputFile := Concatenation("results/line", String(line), et, ".g");;
-        # PrintTo(OutputFile, "");;
         if et = "-" then
             eText := "Plus";
         else
             eText := "Minus";
         fi;
-        # AppendTo(OutputFile, Concatenation("Line", String(line), eText, "Grps := [ \n"));;
 
         NumGrps := 0;
         MaxOrder := 0;
@@ -110,8 +50,6 @@ for lqmpkd in LineQMPKD do
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        # Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-        # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
         for ExCand in GLpkSubgroups do
             # Calculate normalizer of ExCand in GL(q^m,p^k)
@@ -183,12 +121,6 @@ for lqmpkd in LineQMPKD do
                             RankOfMax := rank;
                         fi;
                         Print("!! FOUND RANK = ", rank, "\n");
-                        # AppendTo(OutputFile,"    ", G0, ",\n");;
-                        # Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                        # Print("        G_0 = ", structDesc, "\n");
-                        # Print("        Order of G_0 = ", Order(G0), "\n");
-                        # Print("        Rank = ", rank, "\n");
-                        # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
                     od;
                 fi;
             od;
@@ -200,19 +132,13 @@ for lqmpkd in LineQMPKD do
 od;
 
 
-
-
 ##################################################################################################
 ##################################################################################################
-
 
 
 SetRecursionTrapInterval(10000);
 
-# Change this to wherever you want to have the output file.
-# CurrDir := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/";;
-# Begin Formatting file
-
+Print("\nStarting Optimized Version we iteratively look at maximal subgroups\n");
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
@@ -222,16 +148,14 @@ for lqmpkd in LineQMPKD do
     k := lqmpkd[5];
     d := lqmpkd[6];
 
+    # Type of Extraspecial Group
     for et in ["-","+"] do
 
-        # OutputFile := Concatenation("results/line", String(line), et, ".g");;
-        # PrintTo(OutputFile, "");;
         if et = "-" then
             eText := "Plus";
         else
             eText := "Minus";
         fi;
-        # AppendTo(OutputFile, Concatenation("Line", String(line), eText, "Grps := [ \n"));;
 
         NumGrps := 0;
         MaxOrder := 0;
@@ -254,8 +178,6 @@ for lqmpkd in LineQMPKD do
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
-        # Print("q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-        # Print("Number of subgroups of GL(q^m, p^k) isomorphic to Extraspecial found = ", Length(GLpkSubgroups), "\n\n");
         # FIXME: sometimes this filtering is non-unique, why?
         for ExCand in GLpkSubgroups do
             # Calculate normalizer of ExCand in GL(q^m,p^k)
@@ -329,19 +251,11 @@ for lqmpkd in LineQMPKD do
                             RankOfMax := rank;
                         fi;
                         Print("!! FOUND RANK = ", rank, "\n");
-                        # AppendTo(OutputFile,"    ", G0, ",\n");;
-                        # Print("        q=", String(q), ", m=", String(m), ", p=", String(p), ", k=", String(k), ", d=", String(d), ", et=", et, "\n");
-                        # Print("        G_0 = ", structDesc, "\n");
-                        # Print("        Order of G_0 = ", Order(G0), "\n");
-                        # Print("        Rank = ", rank, "\n");
-                        # Print("        E = ", StructureDescription(Ex_in_G0), "\n");
                     od;
                 fi;
 
-                # even if you remove the if condition, this still misses groups
-                if rank <= 5 and IsPrimitiveMatrixGroup(G0) then
-                    conjugacyClasses := Concatenation(conjugacyClasses, List((ConjugacyClassesMaximalSubgroups(G0)), Representative));
-                fi;
+                # even if you add all possible maximal groups up to conjugacy without any more filtering, you miss some groups
+                conjugacyClasses := Concatenation(conjugacyClasses, List((ConjugacyClassesMaximalSubgroups(G0)), Representative));
             od;
         od;
         NumGrps := Length(groupList);
@@ -349,3 +263,5 @@ for lqmpkd in LineQMPKD do
         Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
     od;
 od;
+
+Print("\nYou'll see that the optimized version misses out on some groups of low rank\n");
