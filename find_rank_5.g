@@ -53,7 +53,7 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     # [43, 2, 2, 7, 1, 4],
     # [44, 2, 2, 11, 1, 4],
     # [45, 2, 2, 13, 1, 4],
-    # [46, 2, 3, 3, 1, 8],
+    [46, 2, 3, 3, 1, 8],
     # [47, 2, 3, 5, 1, 8],
     # [48, 2, 4, 3, 1, 16],
     # [49, 3, 1, 2, 2, 3],
@@ -61,7 +61,7 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     # [51, 3, 1, 2, 4, 3],
     # [52, 3, 1, 2, 4, 6],
     # [53, 3, 1, 2, 4, 12],
-    [54, 3, 1, 2, 6, 18],
+    # [54, 3, 1, 2, 6, 18],
     # [55, 3, 1, 5, 2, 3],
     # [56, 3, 1, 5, 2, 6],
     # [57, 3, 1, 7, 1, 3],
@@ -87,9 +87,9 @@ for lqmpkd in LineQMPKD do
     GLpPerm := Image(permp,GLp);
     Print("Computed Permutation Representations for GL(q^m, p^k) and GL(k * q^m, p)\n");
 
-    for et in ["+"] do
+    # for et in ["+"] do
     # for et in ["-"] do
-    # for et in ["-","+"] do
+    for et in ["-","+"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
         OutputFile := Concatenation("/home/ec2-user/classification/results/line", String(line), et, ".g");;
