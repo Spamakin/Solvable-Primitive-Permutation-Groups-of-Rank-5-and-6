@@ -9,32 +9,33 @@
 # Change this to wherever you want to have the output file.
 CurrDir := "/home/ec2-user/classification/results";;
 # Begin Formatting file
-OutputFile := Concatenation(CurrDir, "/e6_out.g");;
+OutputFile := Concatenation(CurrDir, "/line62.g");;
 PrintTo(OutputFile, "");;
-AppendTo(OutputFile, "LineGrps := [ \n");;
+AppendTo(OutputFile, "Line62Grps := [ \n");;
 
 LinGrp2 := GL(2, 7);;
 LinGrp3 := GL(3, 7);;
-LinGrp2Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp2), Representative);;
+LinGrp2Cong := List(ConjugacyClassesSubgroups(LinGrp2), Representative);;
+LinGrp3Cong := List(ConjugacyClassesSubgroups(LinGrp3), Representative);;
 iso := IsomorphismPermGroup(GL(6, 7));;
+Total := Length(LinGrp2Cong) * Length(LinGrp3Cong);;
+Curr := 0;;
 
-while Length(LinGrp2Cong) > 0 do
-    G2 := Remove(LinGrp2Cong);;
+for G2 in LinGrp2Cong do
     Gens2 := GeneratorsOfGroup(G2);;
-    SeenLowRank2 := false;;
-    AnyPrimitive2 := false;;
-    LinGrp3Cong := List(ConjugacyClassesMaximalSubgroups(LinGrp3), Representative);;
-    while Length(LinGrp3Cong) > 0 do
-        G3 := Remove(LinGrp3Cong);;
+    for G3 in LinGrp2Cong do
+        Curr := Curr + 1;;
+        Print("Computing Group ", Curr, " / ", Total, "\n");
         Gens3 := GeneratorsOfGroup(G3);;
-        SeenLowRank3 := false;;
-        # compute G via Kronecker Product
+
+        # Compute G via Kronecker Product
         Gens := [];;
         for Pair in Cartesian(Gens2, Gens3) do
             Add(Gens, KroneckerProduct(Pair[1], Pair[2]));;
         od;
         if Size(Gens) = 0 then continue; fi;
         G := Group(Gens);;
+
         if ((7^6 - 1) / Order(G)) + 1 > 5 then continue; fi;
 
 	      if IsSolvable(G) and IsIrreducibleMatrixGroup(G) and IsPrimitiveMatrixGroup(G, GF(7)) then
@@ -48,30 +49,7 @@ while Length(LinGrp2Cong) > 0 do
                 SeenLowRank3 := true;;
             fi;
 	      fi;
-
-        if IsPrimitiveMatrixGroup(G, GF(7)) then
-            AnyPrimitive2 := true;;
-            AnyPrimitive3 := true;;
-        fi;
-
-        # Add maximal subgroups of G if G = G2 Y G3 was ever primitive and if we saw anything of low rank
-        #   Subgroup of imprimitive is imprimitive
-        #   Subgroups can never decrease rank
-        if SeenLowRank3 and AnyPrimitive3 then
-            for Cong in List(ConjugacyClassesMaximalSubgroups(G3), Representative) do
-                Add(LinGrp3Cong, Cong);;
-            od;
-        fi;
     od;
-
-    # Add maximal subgroups of G if G = G2 Y G3 was ever primitive and if we saw anything of low rank
-    #   Subgroup of imprimitive is imprimitive
-    #   Subgroups can never decrease rank
-    if SeenLowRank2 and AnyPrimitive2 then
-        for Cong in List(ConjugacyClassesMaximalSubgroups(G2), Representative) do
-            Add(LinGrp2Cong, Cong);;
-        od;
-    fi;
 od;
 
 AppendTo(OutputFile, "];");;
