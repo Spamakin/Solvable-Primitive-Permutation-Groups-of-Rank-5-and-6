@@ -54,7 +54,7 @@ for pk in [[3,1]] do
       G0 := Image(permeb, G);
       rank := Size(Orbits(G0)) + 1;
       if rank <= 5 and rank > 1 then
-        Print("Rank = ", rank, ". Order = ", Size(G), " ", IdGroup(G),"\n");
+        Print("Rank = ", rank, ". Order = ", Size(G),"\n");
         if Size(List(IsomorphicSubgroups(G0, ExCand : findall:=false))) > 0 then
             Print("Contains a subgroup iso to E\n");
         else
