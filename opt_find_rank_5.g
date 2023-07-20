@@ -143,7 +143,7 @@ for lqmpkd in LineQMPKD do
             # Conjugacy suffices since conjugate groups will have the same orbit structure
             CongClassesN := [N];
             while Length(CongClassN) > 0 do
-                G0 := Remove(CongClassN);
+                G0 := Remove(CongClassesN);
 
                 G0Perm := Image(permp, G0);
                 rank := Size(Orbits(G0Perm)) + 1;
@@ -191,7 +191,7 @@ for lqmpkd in LineQMPKD do
 
                 if IsPrimitiveMatrixGroup(G0) and rank <= 5 then
                     for Cong in List(ConjugacyClassesMaximalSubgroups(G0), Representative) do
-                        Add(CongClassN, Cong);
+                        Add(CongClassesN, Cong);
                     od;
                 fi;
             od;
