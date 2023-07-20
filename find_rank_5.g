@@ -111,7 +111,7 @@ for lqmpkd in LineQMPKD do
         # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
 	
-	Print("  Searching for Copies of E...\n");
+	      Print("  Searching for Copies of E...\n");
         # Identify subgroups of GL(q^m, p^k) isomorphic to E
         # There may be more than 1 (?)
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
@@ -130,20 +130,20 @@ for lqmpkd in LineQMPKD do
                 # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
                 N := Normalizer(GLpk,PreImage(permpk, NE));
             else
-		Print("  k > 1\n");
+		            Print("  k > 1\n");
                 basis := Basis(GF(p^k));
                 GLpkGens := GeneratorsOfGroup(GLpk);
-		Print("  Computed Generators of GL(q^m, p^k)\n");
+		            Print("  Computed Generators of GL(q^m, p^k)\n");
                 GLpGens := [];
                 for GLpkGen in GLpkGens do
                     Append(GLpGens, [BlownUpMat(basis, GLpkGen)]);
                 od;
-		Print("  Computed Generators of GL(k * q^m, p)\n");
+		            Print("  Computed Generators of GL(k * q^m, p)\n");
 
                 # Embed NE into GL(k * q^m, p)
                 embedding := GroupHomomorphismByImagesNC(GLpk, GLp, GLpkGens, GLpGens);
                 NEp := Image(embedding, PreImage(permpk, NE));
-		Print("  Computed Embedding of NE into GL(k * q^m, p)\n");
+		            Print("  Computed Embedding of NE into GL(k * q^m, p)\n");
 
                 # Calculate its normalizer
                 N := Normalizer(GLp, NEp);
