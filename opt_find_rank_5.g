@@ -142,6 +142,7 @@ for lqmpkd in LineQMPKD do
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
             # Conjugacy suffices since conjugate groups will have the same orbit structure
             CongClassesN := [N];
+            CongClassesN := Filtered(CongClassesN, G0 -> Float((p^d - 1) / Size(G0)) <= 5.0)
             while Length(CongClassesN) > 0 do
                 G0 := Remove(CongClassesN);
 
@@ -154,18 +155,16 @@ for lqmpkd in LineQMPKD do
                 #   If in B then G0 is primitive matrix group
                 #   rank <= 5
                 if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
-                    # Get number of subgroups of G0 isomorphic to E
-
+                    # Check if E is a subgroup of G0
                     copies_of_E := [];
                     for mono in List(IsomorphicSubgroups(G0, ExCand : findall:=false)) do
                         Add(copies_of_E, Image(mono, ExCand));
                     od;
-
-                    # Check if we have any copies of E
                     copies_of_E_unique := Unique(copies_of_E);
                     if Length(copies_of_E) = 0 then
                         continue;
                     fi;
+
                     failed := false;
                     for H in groupList do
                         if not (IsomorphismGroups(G0, H) = fail) then
@@ -178,26 +177,29 @@ for lqmpkd in LineQMPKD do
                     fi;
                     Append(groupList, [G0]);
 
+                    # TODO: Do we even need this?
                     for Ex_in_G0 in copies_of_E_unique do
                         NumGrps := NumGrps + 1;
                         if Order(G0) > MaxOrder then
                             MaxOrder := Order(G0);
                             RankOfMax := rank;
                         fi;
-                        Print("!! FOUND RANK = ", rank, "\n");
+                        Print("    !! FOUND RANK = ", rank, "\n");
                         AppendTo(OutputFile,"    ", G0, ",\n");;
                     od;
                 fi;
 
                 if IsPrimitiveMatrixGroup(G0) and rank <= 5 then
-                    for Cong in List(ConjugacyClassesMaximalSubgroups(G0), Representative) do
+                    CongClassesG0 := List(ConjugacyClassesMaximalSubgroups(G0), Representative)
+                    CongClassesG0 := Filtered(CongClassesG0, G0 -> Float((p^d - 1) / Size(G0)) <= 5.0)
+                    for Cong in CongClassesG0 do
                         Add(CongClassesN, Cong);
                     od;
                 fi;
             od;
         od;
         NumGrps := Length(groupList);
-        Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n");
+        Print(q, "  ", m, "  ", p, "  ", k, "  ", d, "  ", RankOfMax, "  ", MaxOrder, "  ", NumGrps, "  E", et, "\n\n\n");
         AppendTo(OutputFile, "];\n\n");;
     od;
 od;
