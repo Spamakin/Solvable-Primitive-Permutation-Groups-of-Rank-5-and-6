@@ -89,9 +89,9 @@ for lqmpkd in LineQMPKD do
         OutputFile := Concatenation("/home/ec2-user/classification/opt_results/line", String(line), et, ".g");;
         PrintTo(OutputFile, "");;
         if et = "-" then
-            eText := "Plus";
-        else
             eText := "Minus";
+        else
+            eText := "Plus";
         fi;
         AppendTo(OutputFile, Concatenation("Line", String(line), eText, "Grps := [ \n"));;
 
