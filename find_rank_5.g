@@ -54,8 +54,8 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
     # [44, 2, 2, 11, 1, 4],
     # [45, 2, 2, 13, 1, 4],
     # [46, 2, 3, 3, 1, 8],
-    [47, 2, 3, 5, 1, 8],
-    # [48, 2, 4, 3, 1, 16],
+    # [47, 2, 3, 5, 1, 8],
+    [48, 2, 4, 3, 1, 16],
     # [49, 3, 1, 2, 2, 3],
     # [50, 3, 1, 2, 2, 6],
     # [51, 3, 1, 2, 4, 3],
@@ -88,8 +88,8 @@ for lqmpkd in LineQMPKD do
     GLpPerm := Image(permp,GLp);
     Print("Computed Permutation Representations for GL(q^m, p^k) and GL(k * q^m, p)\n");
 
-    # for et in ["+"] do
-    for et in ["-"] do
+    for et in ["+"] do
+    # for et in ["-"] do
     # for et in ["-","+"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
@@ -130,16 +130,20 @@ for lqmpkd in LineQMPKD do
                 # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
                 N := Normalizer(GLpk,PreImage(permpk, NE));
             else
+		Print("  k > 1\n");
                 basis := Basis(GF(p^k));
                 GLpkGens := GeneratorsOfGroup(GLpk);
+		Print("  Computed Generators of GL(q^m, p^k)\n");
                 GLpGens := [];
                 for GLpkGen in GLpkGens do
                     Append(GLpGens, [BlownUpMat(basis, GLpkGen)]);
                 od;
+		Print("  Computed Generators of GL(k * q^m, p)\n");
 
                 # Embed NE into GL(k * q^m, p)
                 embedding := GroupHomomorphismByImagesNC(GLpk, GLp, GLpkGens, GLpGens);
                 NEp := Image(embedding, PreImage(permpk, NE));
+		Print("  Computed Embedding of NE into GL(k * q^m, p)\n");
 
                 # Calculate its normalizer
                 N := Normalizer(GLp, NEp);
