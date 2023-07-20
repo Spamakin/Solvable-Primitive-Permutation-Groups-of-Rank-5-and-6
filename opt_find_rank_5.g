@@ -110,7 +110,7 @@ for lqmpkd in LineQMPKD do
         GLpkSubgroups := Filtered(GLpkSubgroups,x->Order(x) = Order(Extraspecial));
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
         Print("  Constructed Candidate Subgroups Isomorphic to E\n");
-        Print("  Number of Candidates = " Length(GLpkSubgroups), "\n");
+        Print("  Number of Candidates = ", Length(GLpkSubgroups), "\n");
 
         # FIXME: sometimes this filtering is non-unique, why?
         for ExCand in GLpkSubgroups do
