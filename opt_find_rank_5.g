@@ -86,7 +86,7 @@ for lqmpkd in LineQMPKD do
     for et in ["-","+"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
-        OutputFile := Concatenation("/home/ec2-user/classification/opt_results/line", String(line), et, ".g");;
+        OutputFile := Concatenation("/home/ec2-user/classification/one_E_results/line", String(line), et, ".g");;
         PrintTo(OutputFile, "");;
         if et = "-" then
             eText := "Minus";
@@ -113,8 +113,8 @@ for lqmpkd in LineQMPKD do
         Print("  Number of Candidates = ", Length(GLpkSubgroups), "\n");
 
         # TEST, take only the first one
-        if Length(GlpkSubgroups) > 0 then
-            GlpkSubgroups :=  [GlpkSubgroups[1]];
+        if Length(GLpkSubgroups) > 0 then
+            GLpkSubgroups :=  [GLpkSubgroups[1]];
         fi;
 
         # FIXME: sometimes this filtering is non-unique, why?
