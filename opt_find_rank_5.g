@@ -142,9 +142,8 @@ for lqmpkd in LineQMPKD do
             # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
             # Conjugacy suffices since conjugate groups will have the same orbit structure
             CongClassesN := [N];
-            CongClassesN := Filtered(CongClassesN, G0 -> Float((p^d - 1) / Size(G0)) <= 5.0)
             while Length(CongClassesN) > 0 do
-                G0 := Remove(CongClassesN);
+                G0 := Remove(CongClassesN);		
 
                 G0Perm := Image(permp, G0);
                 rank := Size(Orbits(G0Perm)) + 1;
@@ -190,8 +189,7 @@ for lqmpkd in LineQMPKD do
                 fi;
 
                 if IsPrimitiveMatrixGroup(G0) and rank <= 5 then
-                    CongClassesG0 := List(ConjugacyClassesMaximalSubgroups(G0), Representative)
-                    CongClassesG0 := Filtered(CongClassesG0, G0 -> Float((p^d - 1) / Size(G0)) <= 5.0)
+                    CongClassesG0 := List(ConjugacyClassesMaximalSubgroups(G0), Representative);
                     for Cong in CongClassesG0 do
                         Add(CongClassesN, Cong);
                     od;
