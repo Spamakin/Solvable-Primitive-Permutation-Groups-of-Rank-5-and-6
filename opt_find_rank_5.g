@@ -103,7 +103,7 @@ for lqmpkd in LineQMPKD do
         # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
 	
-	Print("  Searching for Copies of E...\n");
+	      Print("  Searching for Copies of E...\n");
         # Identify subgroups of GL(q^m, p^k) isomorphic to E
         # There may be more than 1 (?)
         GLpkSubgroups := List(ConjugacyClassesSubgroups(SylowSubgroup(GLpkPerm,q)), Representative);
@@ -111,6 +111,11 @@ for lqmpkd in LineQMPKD do
         GLpkSubgroups := Filtered(GLpkSubgroups,x->IdGroup(x) = IdGroup(Extraspecial));
         Print("  Constructed Candidate Subgroups Isomorphic to E\n");
         Print("  Number of Candidates = ", Length(GLpkSubgroups), "\n");
+
+        # TEST, take only the first one
+        if Length(GlpkSubgroups) > 0 then
+            GlpkSubgroups :=  [GlpkSubgroups[1]];
+        fi;
 
         # FIXME: sometimes this filtering is non-unique, why?
         for ExCand in GLpkSubgroups do

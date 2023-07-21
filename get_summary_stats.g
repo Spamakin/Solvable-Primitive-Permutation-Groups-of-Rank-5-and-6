@@ -1,4 +1,4 @@
-folderPath := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/opt_results";
+folderPath := "/home/spamakin/projects/research/classification/opt_results";
 
 for i in [1 .. 59] do
     for et in ["-","+"] do
@@ -6,7 +6,7 @@ for i in [1 .. 59] do
             continue;
         fi;
         currFile := Concatenation(folderPath, "/line", String(i), et, ".g");
-        Read(currFile);
+        Read(currFile);;
     od;
 od;
 
@@ -129,7 +129,7 @@ allGroups := [
     Line58PlusGrps,
     Line59MinusGrps,
     Line59PlusGrps
-];
+];;
 
 
 LineQMPKD := [ # only irreducible cases where e is a prime power
