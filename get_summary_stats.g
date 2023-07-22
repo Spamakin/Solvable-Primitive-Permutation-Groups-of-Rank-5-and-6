@@ -1,4 +1,4 @@
-folderPath := "/home/ec2-user/classification/one_E_results";
+folderPath := "/home/ec2-user/classification/results";
 
 for i in [1 .. 59] do
     for et in ["-","+"] do
