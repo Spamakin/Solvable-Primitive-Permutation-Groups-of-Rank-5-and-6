@@ -1,4 +1,4 @@
-folderPath := "/home/spamakin/projects/research/classification/opt_results";
+folderPath := "/home/ec2-user/classification/one_E_results";
 
 for i in [1 .. 59] do
     for et in ["-","+"] do
@@ -215,6 +215,18 @@ for i in [1 .. 59] do
         fi;
         Print("Line ", i, et, ":\n");
         Print("q,m,p,k,d,et = ", q, ",", m, ",", p, ",", k, ",", d, ",", et, "\n");
-        Print(Size(allGroups[j]), " groups\n\n");
+	Grps := allGroups[j];
+	ranks := [0, 0, 0, 0, 0];
+        GLp := GL(k * q^m, p);
+        permp := IsomorphismPermGroup(GLp);
+	for G0 in Grps do
+            G0Perm := Image(permp, G0);
+            rank := Size(Orbits(G0Perm)) + 1;
+            ranks[rank] := ranks[rank] + 1;
+	od;
+        for rank in [2..5] do
+            Print("Number of rank ", rank, " = ", ranks[rank], "\n");
+        od;
+        Print(Size(Grps), " groups\n\n");
     od;
 od;

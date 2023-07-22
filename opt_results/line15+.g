@@ -1,3 +1,0 @@
-Line15PlusGrps := [ 
-];
-

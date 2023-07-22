@@ -1,3 +1,0 @@
-Line43PlusGrps := [ 
-];
-
