@@ -195,11 +195,13 @@ for lqmpkd in LineQMPKD do
 
         # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
         # Conjugacy suffices since conjugate groups will have the same orbit structure
-	# Iteratively take maximal subgroups to save memory
+        # Iteratively take maximal subgroups to save memory
         CongClassesN := [N];
         while Length(CongClassesN) > 0 do
             G0 := Remove(CongClassesN);
+            Print("    Checking subgroup of order ", Order(G0), "\n");
 
+            # Compute rank
             G0Perm := Image(permp, G0);
             rank := Size(Orbits(G0Perm)) + 1;
 
@@ -210,16 +212,11 @@ for lqmpkd in LineQMPKD do
             #   rank <= 5
             if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
                 Print("    Checking if E is a subgroup of G0...\n");
-		# Check if E is a subgroup of G0
-                copies_of_E := [];
-                for mono in List(IsomorphicSubgroups(G0, ExCand : findall:=false)) do
-                    Add(copies_of_E, Image(mono, ExCand));
-                od;
-                if Length(copies_of_E) = 0 then
+                if IsomorphicSubgroups(SylowSubgroup(G0, q), ExCand : findall:=false) = [] then
                     continue;
                 fi;
-	
-		Print("    Checking if we've seen G0 before...\n");
+
+                Print("    Checking if we've seen G0 before...\n");
                 failed := false;
                 for H in groupList do
                     if not (IsomorphismGroups(G0, H) = fail) then
@@ -244,7 +241,7 @@ for lqmpkd in LineQMPKD do
             # Subgroups must have higher rank,
             #   so if rank(G0) >= 6 then the subgroups have rank >= 6
             if IsPrimitiveMatrixGroup(G0) and rank <= 5 then
-		Print("    Searching for maximal subgroups...\n");
+                Print("    Searching for maximal subgroups...\n");
                 CongClassesG0 := List(ConjugacyClassesMaximalSubgroups(G0), Representative);
                 for Cong in CongClassesG0 do
                     Add(CongClassesN, Cong);
