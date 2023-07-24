@@ -67,24 +67,18 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         afBound = 24
     elif e == 9:
         afBound = (24**2) * 2
+    
+    factorsList = getDivisors(dim * afBound * e * e * (w - 1))[::-1] #biggest factor is first
+    temp = w ** (e * b) - 1
+    rank = 1
 
-    orbits = 1
-    leftover = w ** (e * b) - 1
-    order = dim * afBound * e * e * (w - 1)
-    div = 1
-    while orbits <= 5 and leftover > 0:
-        if order % div == 0:
-            curr_size = order // div
-            while leftover >= curr_size:
-                if orbits > 5:
-                    break
-                leftover -= curr_size
-                orbits += 1
-
-        div += 1
-
-    return orbits
-    #return ((w ** (e * b) - 1) / (dim * afBound * e * e * (w - 1))) + 1
+    while temp > 0:
+        for factor in factorsList:
+            while factor <= temp:
+                temp -= factor
+                rank += 1
+    
+    return rank
 
 
 final_params_irred = []
@@ -99,7 +93,19 @@ for e in [2, 3, 4, 8, 9, 16]:
         w = 4
 
     # through theoretical analysis, if w > 1230, the rank will always be >5
-    while w <= 1230:
+    if e == 2:
+        wBound = 1230
+    elif e == 3:
+        wBound = 82
+    elif e == 4:
+        wBound = 7
+    elif e == 8:
+        wBound = 7
+    elif e == 9:
+        wBound = 5
+    elif e == 16:
+        wBound = 3
+    while w <= wBound:
         p, k = powerOfPrime(w)  # w = p^k
         if p == -1:
             # ep divides |W| - 1
@@ -116,6 +122,8 @@ for e in [2, 3, 4, 8, 9, 16]:
                     numSuccesses += 1
                     rankLowerBound = math.ceil(rankLowerBound)
                     q, m = powerOfPrime(e) # e = q^m
+                    if dim != k:
+                        continue
                     if b == 1:
                         final_params_irred.append([q, m, p, k, dim * e * b])
                     else:
@@ -127,11 +135,6 @@ for e in [2, 3, 4, 8, 9, 16]:
             b += 1
 
         w += ep
-
-# For e = 6 we only have 1 possibility
-# b = 1
-# 6 is our prime
-final_params_irred.append([6, 1, 7, 1, 1 * 6 * 1])
 
 print("Irreducible Params")
 final_params_irred.sort()
