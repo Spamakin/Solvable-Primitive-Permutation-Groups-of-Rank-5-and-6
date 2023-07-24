@@ -1,3 +1,0 @@
-Line20MinusGrps := [ 
-];
-
