@@ -132,9 +132,6 @@ for lqmpkd in LineQMPKD do
             #   rank <= 5
             if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
                 Print("    Checking if E is a subgroup of G0\n");
-                # if IsomorphicSubgroups(SylowSubgroup(G0, q), ExCand : findall:=false) = [] then
-                #     continue;
-                # fi;
                 Cons := ExactSizeConsiderFunction(q^(2*m+1));
                 SubGrps := SubgroupsSolvableGroup(G0 : consider:=Cons);
                 Found := false;
