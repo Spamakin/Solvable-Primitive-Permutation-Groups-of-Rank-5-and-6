@@ -67,8 +67,10 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         afBound = 24
     elif e == 9:
         afBound = (24**2) * 2
-    
-    factorsList = getDivisors(dim * afBound * e * e * (w - 1))[::-1] #biggest factor is first
+
+    factorsList = getDivisors(dim * afBound * e * e * (w - 1))[
+        ::-1
+    ]  # biggest factor is first
     temp = w ** (e * b) - 1
     rank = 1
 
@@ -77,7 +79,7 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
             while factor <= temp:
                 temp -= factor
                 rank += 1
-    
+
     return rank
 
 
@@ -121,13 +123,17 @@ for e in [2, 3, 4, 8, 9, 16]:
                 if rankLowerBound <= 5:
                     numSuccesses += 1
                     rankLowerBound = math.ceil(rankLowerBound)
-                    q, m = powerOfPrime(e) # e = q^m
+                    q, m = powerOfPrime(e)  # e = q^m
                     if dim != k:
                         continue
                     if b == 1:
-                        final_params_b1.append([q, m, p, k, dim * e * b, rankLowerBound])
+                        final_params_b1.append(
+                            [q, m, p, k, dim * e * b, rankLowerBound]
+                        )
                     else:
-                        final_params_b2.append([q, m, p, k, dim * e * b, rankLowerBound])
+                        final_params_b2.append(
+                            [q, m, p, k, dim * e * b, rankLowerBound]
+                        )
 
             # stop incrementing b if the rank estimate gets too high; increasing b can only increase the estimate
             if numSuccesses == 0:
