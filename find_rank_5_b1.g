@@ -44,7 +44,7 @@ LineQMPKD := [ # only irreducible cases where e is a prime power
 
 
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/spamakin/projects/research/classification/opt_results_new_bounds";;
+OutputDirr := "/home/spamakin/projects/research/classification/results";;
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
@@ -54,18 +54,17 @@ for lqmpkd in LineQMPKD do
     k := lqmpkd[5];
     d := lqmpkd[6];
 
-    Print("Computing permutation representations for GL(q^m, p^k) and GL(k * q^m, p)...\n");
+    Print("Computing permutation representations for GL(q^m, p^k) and GL(k * q^m, p)\n");
     GLpk := GL(q^m, p^k);
     GLp := GL(k * q^m, p);
     permpk := IsomorphismPermGroup(GLpk);
     permp := IsomorphismPermGroup(GLp);
     GLpkPerm := Image(permpk,GLpk);
     GLpPerm := Image(permp,GLp);
-    Print("Computed permutation representations for GL(q^m, p^k) and GL(k * q^m, p)\n");
 
     # for et in ["+"] do
     # for et in ["-"] do
-    for et in ["-","+"] do
+    for et in ["+","-"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
         OutputFile := Concatenation(OutputDirr, "/line", String(line), et, ".g");
@@ -82,7 +81,7 @@ for lqmpkd in LineQMPKD do
         RankOfMax := 0;
         groupList := [];
 
-        Print("  Searching for copies of E...\n");
+        Print("  Searching for copies of E\n");
         # Construct E, the extraspecial subgroup of G_0, as a subgroup of GL(q^m, p^k)
         Extraspecial := ExtraspecialGroup(q^(2*m+1), et);
         R := IrreducibleRepresentations(Extraspecial, GF(p^k));
@@ -90,30 +89,29 @@ for lqmpkd in LineQMPKD do
         R := [R[1]];
         ExCand := Image(permpk, Image(R[1]));
 
+        Print("  Computing NE\n");
         NE := Normalizer(GLpkPerm, ExCand);
-        Print("  Computed NE\n");
 
+        Print("  Computing N\n");
         if k = 1 then
             # If k=1, GL(q^m,p^k) = GL(q^m,p) so no embedding is needed
             N := Normalizer(GLpk,PreImage(permpk, NE));
         else
             Print("  k > 1\n");
+            Print("  Computing generators of GL(q^m, p^k)\n");
             basis := Basis(GF(p^k));
             GLpkGens := GeneratorsOfGroup(GLpk);
-            Print("  Computed generators of GL(q^m, p^k)\n");
             GLpGens := [];
             for GLpkGen in GLpkGens do
                 Append(GLpGens, [BlownUpMat(basis, GLpkGen)]);
             od;
-            Print("  Computed generators of GL(k * q^m, p)\n");
 
+            Print("  Computing embedding of NE into GL(k * q^m, p)\n");
             embedding := GroupHomomorphismByImagesNC(GLpk, GLp, GLpkGens, GLpGens);
             NEp := Image(embedding, PreImage(permpk, NE));
-            Print("  Computed embedding of NE into GL(k * q^m, p)\n");
 
             N := Normalizer(GLp, NEp);
         fi;
-        Print("  Computed N\n");
 
         # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
         # Conjugacy suffices since conjugate groups will have the same orbit structure
@@ -121,7 +119,7 @@ for lqmpkd in LineQMPKD do
         CongClassesN := [N];
         while Length(CongClassesN) > 0 do
             G0 := Remove(CongClassesN);
-            Print("    Checking subgroup of order ", Order(G0), "\n");
+            Print("  Checking subgroup of order ", Order(G0), "\n");
 
             # Compute rank
             G0Perm := Image(permp, G0);
@@ -133,7 +131,7 @@ for lqmpkd in LineQMPKD do
             #   If in B then G0 is primitive matrix group
             #   rank <= 5
             if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 5 then
-                Print("    Checking if E is a subgroup of G0...\n");
+                Print("    Checking if E is a subgroup of G0\n");
                 # if IsomorphicSubgroups(SylowSubgroup(G0, q), ExCand : findall:=false) = [] then
                 #     continue;
                 # fi;
@@ -147,7 +145,7 @@ for lqmpkd in LineQMPKD do
                 od;
                 if not Found then continue; fi;
 
-                Print("    Checking if we've seen G0 before...\n");
+                Print("    Checking if we've seen G0 before\n");
                 failed := false;
                 for H in groupList do
                     if not (IsomorphismGroups(G0, H) = fail) then
@@ -170,7 +168,7 @@ for lqmpkd in LineQMPKD do
             # Subgroups must have higher rank,
             #   so if rank(G0) >= 6 then the subgroups have rank >= 6
             if IsPrimitiveMatrixGroup(G0) and rank <= 5 then
-                Print("    Searching for maximal subgroups...\n");
+                Print("    Searching for maximal subgroups\n");
                 CongClassesG0 := List(ConjugacyClassesMaximalSubgroups(G0), Representative);
                 for Cong in CongClassesG0 do
                     Add(CongClassesN, Cong);
