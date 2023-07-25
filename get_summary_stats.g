@@ -1,16 +1,13 @@
-folderPath := "/home/ec2-user/classification/results";
+FolderPath := "/home/spamakin/projects/research/classification/results";
 
-for i in [1 .. 59] do
+for i in [1 .. 41] do
     for et in ["-","+"] do
-        if (i in [46,47,48,54]) then
-            continue;
-        fi;
-        currFile := Concatenation(folderPath, "/line", String(i), et, ".g");
-        Read(currFile);;
+        CurrFile := Concatenation(FolderPath, "/line", String(i), et, ".g");
+        Read(CurrFile);;
     od;
 od;
 
-allGroups := [
+GroupList := [
     Line1MinusGrps,
     Line1PlusGrps,
     Line2MinusGrps,
@@ -93,140 +90,81 @@ allGroups := [
     Line40PlusGrps,
     Line41MinusGrps,
     Line41PlusGrps,
-    Line42MinusGrps,
-    Line42PlusGrps,
-    Line43MinusGrps,
-    Line43PlusGrps,
-    Line44MinusGrps,
-    Line44PlusGrps,
-    Line45MinusGrps,
-    Line45PlusGrps,
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    Line49MinusGrps,
-    Line49PlusGrps,
-    Line50MinusGrps,
-    Line50PlusGrps,
-    Line51MinusGrps,
-    Line51PlusGrps,
-    Line52MinusGrps,
-    Line52PlusGrps,
-    Line53MinusGrps,
-    Line53PlusGrps,
-    [],
-    [],
-    Line55MinusGrps,
-    Line55PlusGrps,
-    Line56MinusGrps,
-    Line56PlusGrps,
-    Line57MinusGrps,
-    Line57PlusGrps,
-    Line58MinusGrps,
-    Line58PlusGrps,
-    Line59MinusGrps,
-    Line59PlusGrps
 ];;
 
-
-LineQMPKD := [ # only irreducible cases where e is a prime power
+LineQMPKD := [ # only cases where b = 1
     [1, 2, 1, 3, 1, 2],
-    [2, 2, 1, 3, 2, 2],
-    [3, 2, 1, 3, 2, 4],
-    [4, 2, 1, 3, 3, 2],
-    [5, 2, 1, 3, 3, 6],
-    [6, 2, 1, 3, 4, 2],
-    [7, 2, 1, 3, 4, 4],
-    [8, 2, 1, 3, 4, 8],
-    [9, 2, 1, 3, 5, 10],
-    [10, 2, 1, 5, 1, 2],
-    [11, 2, 1, 5, 2, 2],
-    [12, 2, 1, 5, 2, 4],
-    [13, 2, 1, 5, 3, 6],
-    [14, 2, 1, 7, 1, 2],
-    [15, 2, 1, 7, 2, 2],
-    [16, 2, 1, 7, 2, 4],
-    [17, 2, 1, 11, 1, 2],
-    [18, 2, 1, 11, 2, 4],
-    [19, 2, 1, 13, 1, 2],
-    [20, 2, 1, 13, 2, 4],
-    [21, 2, 1, 17, 1, 2],
-    [22, 2, 1, 19, 1, 2],
-    [23, 2, 1, 23, 1, 2],
-    [24, 2, 1, 29, 1, 2],
-    [25, 2, 1, 31, 1, 2],
-    [26, 2, 1, 37, 1, 2],
-    [27, 2, 1, 41, 1, 2],
-    [28, 2, 1, 43, 1, 2],
-    [29, 2, 1, 47, 1, 2],
-    [30, 2, 1, 53, 1, 2],
-    [31, 2, 1, 59, 1, 2],
-    [32, 2, 1, 61, 1, 2],
-    [33, 2, 1, 67, 1, 2],
-    [34, 2, 1, 71, 1, 2],
-    [35, 2, 1, 73, 1, 2],
-    [36, 2, 1, 79, 1, 2],
-    [37, 2, 1, 83, 1, 2],
-    [38, 2, 1, 89, 1, 2],
-    [39, 2, 2, 3, 1, 4],
-    [40, 2, 2, 3, 2, 4],
-    [41, 2, 2, 3, 2, 8],
-    [42, 2, 2, 5, 1, 4],
-    [43, 2, 2, 7, 1, 4],
-    [44, 2, 2, 11, 1, 4],
-    [45, 2, 2, 13, 1, 4],
-    [46, 2, 3, 3, 1, 8],
-    [47, 2, 3, 5, 1, 8],
-    [48, 2, 4, 3, 1, 16],
-    [49, 3, 1, 2, 2, 3],
-    [50, 3, 1, 2, 2, 6],
-    [51, 3, 1, 2, 4, 3],
-    [52, 3, 1, 2, 4, 6],
-    [53, 3, 1, 2, 4, 12],
-    [54, 3, 1, 2, 6, 18],
-    [55, 3, 1, 5, 2, 3],
-    [56, 3, 1, 5, 2, 6],
-    [57, 3, 1, 7, 1, 3],
-    [58, 3, 1, 13, 1, 3],
-    [59, 3, 1, 19, 1, 3],
-    [60, 3, 2, 2, 2, 9],
-    [61, 3, 2, 2, 2, 18],
+    [2, 2, 1, 3, 2, 4],
+    [3, 2, 1, 3, 3, 6],
+    [4, 2, 1, 3, 4, 8],
+    [5, 2, 1, 3, 5, 10],
+    [6, 2, 1, 5, 1, 2],
+    [7, 2, 1, 5, 2, 4],
+    [8, 2, 1, 5, 3, 6],
+    [9, 2, 1, 7, 1, 2],
+    [10, 2, 1, 7, 2, 4],
+    [11, 2, 1, 11, 1, 2],
+    [12, 2, 1, 11, 2, 4],
+    [13, 2, 1, 13, 1, 2],
+    [14, 2, 1, 17, 1, 2],
+    [15, 2, 1, 19, 1, 2],
+    [16, 2, 1, 23, 1, 2],
+    [17, 2, 1, 29, 1, 2],
+    [18, 2, 1, 31, 1, 2],
+    [19, 2, 1, 37, 1, 2],
+    [20, 2, 1, 41, 1, 2],
+    [21, 2, 1, 43, 1, 2],
+    [22, 2, 1, 47, 1, 2],
+    [23, 2, 1, 53, 1, 2],
+    [24, 2, 1, 59, 1, 2],
+    [25, 2, 1, 61, 1, 2],
+    [26, 2, 1, 67, 1, 2],
+    [27, 2, 1, 71, 1, 2],
+    [28, 2, 1, 73, 1, 2],
+    [29, 2, 1, 79, 1, 2],
+    [30, 2, 1, 83, 1, 2],
+    [31, 2, 2, 3, 1, 4],
+    [32, 2, 2, 5, 1, 4],
+    [33, 2, 2, 7, 1, 4],
+    [34, 2, 3, 3, 1, 8],
+    [35, 2, 3, 5, 1, 8],
+    [36, 3, 1, 2, 2, 6],
+    [37, 3, 1, 2, 4, 12],
+    [38, 3, 1, 5, 2, 6],
+    [39, 3, 1, 7, 1, 3],
+    [40, 3, 1, 13, 1, 3],
+    [41, 3, 1, 19, 1, 3],
 ];;
 
-
-for i in [1 .. 59] do
+for i in [1 .. 41] do
     q := LineQMPKD[i][2];
     m := LineQMPKD[i][3];
     p := LineQMPKD[i][4];
     k := LineQMPKD[i][5];
     d := LineQMPKD[i][6];
     for et in ["-","+"] do
-        if (i in [46,47,48,54]) then
-            continue;
-        fi;
-
         if et = "-" then
             j := 2 * i - 1;
         else
             j := 2 * i;
         fi;
         Print("Line ", i, et, ":\n");
-        Print("q,m,p,k,d,et = ", q, ",", m, ",", p, ",", k, ",", d, ",", et, "\n");
-	Grps := allGroups[j];
-	ranks := [0, 0, 0, 0, 0];
-        GLp := GL(k * q^m, p);
-        permp := IsomorphismPermGroup(GLp);
-	for G0 in Grps do
+        Print("q, m, p, k, d, et = ", q, ", ", m, ", ", p, ", ", k, ", ", d, ", ", et, "\n");
+        Grps := GroupList[j];
+        Ranks := [0, 0, 0, 0, 0];
+            GLp := GL(k * q^m, p);
+            permp := IsomorphismPermGroup(GLp);
+        for G0 in Grps do
             G0Perm := Image(permp, G0);
             rank := Size(Orbits(G0Perm)) + 1;
-            ranks[rank] := ranks[rank] + 1;
-	od;
-        for rank in [2..5] do
-            Print("Number of rank ", rank, " = ", ranks[rank], "\n");
+            Ranks[rank] := Ranks[rank] + 1;
         od;
-        Print(Size(Grps), " groups\n\n");
+        Print(Size(Grps), " groups\n");
+        for rank in [2..5] do
+            Print("  Number of rank ", rank, " = ", Ranks[rank], "\n");
+        od;
+        Print("\n");
     od;
 od;
+
+QUIT;
