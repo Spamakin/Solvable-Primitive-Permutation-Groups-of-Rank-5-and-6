@@ -81,8 +81,8 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
     return rank
 
 
-final_params_irred = []
-final_params_red = []
+final_params_b1 = []
+final_params_b2 = []
 
 for e in [2, 3, 4, 8, 9, 16]:
     if e % 2 == 0:
@@ -125,9 +125,9 @@ for e in [2, 3, 4, 8, 9, 16]:
                     if dim != k:
                         continue
                     if b == 1:
-                        final_params_irred.append([q, m, p, k, dim * e * b])
+                        final_params_b1.append([q, m, p, k, dim * e * b, rankLowerBound])
                     else:
-                        final_params_red.append([q, m, p, k, dim * e * b])
+                        final_params_b2.append([q, m, p, k, dim * e * b, rankLowerBound])
 
             # stop incrementing b if the rank estimate gets too high; increasing b can only increase the estimate
             if numSuccesses == 0:
@@ -136,13 +136,67 @@ for e in [2, 3, 4, 8, 9, 16]:
 
         w += ep
 
-print("Irreducible Params")
-final_params_irred.sort()
-for i, params in enumerate(final_params_irred):
-    print([i + 1] + params)
-print()
+final_params_b1.sort()
+final_params_b2.sort()
 
-print("Reducible Params")
-final_params_red.sort()
-for i, params in enumerate(final_params_red):
-    print([i + 1 + len(final_params_irred)] + params)
+# List parameters for GAP
+with open("gap_params.txt", "w") as f:
+    lines = []
+    lines.append("LineQMPKD := [ # only cases where b = 1\n")
+    for i, line in enumerate(final_params_b1):
+        param = [i + 1] + line[0:5]
+        lines.append("    " + str(param) + ",\n")
+    lines.append("];;\n\n")
+
+    lines.append("LineQMPKD := [ # only cases where b > 1\n")
+    for i, line in enumerate(final_params_b2):
+        param = [i + 1 + len(final_params_b1)] + line[0:5]
+        lines.append("    " + str(param) + ",\n")
+    lines.append("];;\n\n")
+
+    f.writelines(lines)
+
+# Make LaTeX table
+with open("latex_params.txt", "w") as f:
+    lines = []
+    lines.append("% Table For b = 1\n")
+    lines.append("\\begin{table}[h]\n")
+    lines.append("    \centering\n")
+    lines.append("    \\begin{tabular}{|c|c|c|c|c|c|c|}\n")
+    lines.append("        \hline\n")
+    lines.append("        lines & $q$ & $m$ & $p$ & $k$ & $d$ & rank $\geq$ \\\\ \n")
+    lines.append("        \hline\n")
+    for i, line in enumerate(final_params_b1):
+        num = i + 1
+        q = line[0]
+        m = line[1]
+        p = line[2]
+        k = line[3]
+        d = line[4]
+        lb = line[5]
+        lines.append(f"        {num} & {q} & {m} & {p} & {k} & {d} & {lb} \\\\ \n")
+        lines.append("        \hline\n")
+    lines.append("    \end{tabular}\n")
+    lines.append("\end{table}\n\n\n")
+
+    lines.append("% Table For b = 2\n")
+    lines.append("\\begin{table}[h]\n")
+    lines.append("    \centering\n")
+    lines.append("    \\begin{tabular}{|c|c|c|c|c|c|c|}\n")
+    lines.append("        \hline\n")
+    lines.append("        lines & $q$ & $m$ & $p$ & $k$ & $d$ & rank $\geq$ \\\\ \n")
+    lines.append("        \hline\n")
+    for i, line in enumerate(final_params_b2):
+        num = i + 1 + len(final_params_b1)
+        q = line[0]
+        m = line[1]
+        p = line[2]
+        k = line[3]
+        d = line[4]
+        lb = line[5]
+        lines.append(f"        {num} & {q} & {m} & {p} & {k} & {d} & {lb} \\\\ \n")
+        lines.append("        \hline\n")
+    lines.append("    \end{tabular}\n")
+    lines.append("\end{table}\n\n\n")
+
+    f.writelines(lines)
