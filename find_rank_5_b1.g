@@ -39,7 +39,7 @@ LineQMPKD := [ # only cases where b = 1
     [38, 3, 1, 5, 2, 6],
     [39, 3, 1, 7, 1, 3],
     [40, 3, 1, 13, 1, 3],
-    [41, 3, 1, 19, 1, 3],
+    [41, 3, 1, 19, 1, 3]
 ];;
 
 
@@ -145,7 +145,9 @@ for lqmpkd in LineQMPKD do
                 Print("    Checking if we've seen G0 before\n");
                 failed := false;
                 for H in groupList do
-                    if not (IsomorphismGroups(G0, H) = fail) then
+                    HPerm := Image(permp, H);
+                    prevRank := Size(Orbits(HPerm)) + 1;
+                    if (rank = prevRank) and (IsomorphismGroups(G0, H) <> fail) then
                         failed := true;
                     fi;
                 od;
