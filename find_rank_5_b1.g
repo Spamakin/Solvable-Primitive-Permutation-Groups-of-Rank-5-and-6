@@ -114,7 +114,6 @@ for lqmpkd in LineQMPKD do
         fi;
 
         # Cycle through all subgroups of N, printing data about the solvable, primitive ones of low rank
-        # Conjugacy suffices since conjugate groups will have the same orbit structure
         # Iteratively take maximal subgroups to save memory
         CongClassesN := [N];
         while Length(CongClassesN) > 0 do
