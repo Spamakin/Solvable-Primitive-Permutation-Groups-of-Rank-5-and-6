@@ -57,7 +57,8 @@ for et in ["+", "-"] do
     # Take the second normalizer in GL(q^m*b,p^k)
     N := Normalizer(GLeb, NAeb);
 
-    #Check every subgroup class of N for the properties we require of G
+    # Check every subgroup class of N for the properties we require of G
+    #
     for G in List(ConjugacyClassesSubgroups(N), Representative) do
         if IsSolvable(G) and IsPrimitiveMatrixGroup(G) and IsIrreducibleMatrixGroup(G) then
             G0 := Image(permeb, G);
@@ -77,7 +78,9 @@ for et in ["+", "-"] do
                 Print("    Checking if we've seen G0 before\n");
                 failed := false;
                 for H in groupList do
-                    if not (IsomorphismGroups(G0, H) = fail) then
+                    HPerm := Image(permp, H);
+                    prevRank := Size(Orbits(HPerm)) + 1;
+                    if (rank = prevRank) and (IsomorphismGroups(G0, H) <> fail) then
                         failed := true;
                     fi;
                 od;
