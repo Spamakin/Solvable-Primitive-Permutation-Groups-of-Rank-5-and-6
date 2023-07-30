@@ -100,7 +100,7 @@ for e in [2, 3, 4, 8, 9, 16]:
     elif e == 3:
         wBound = 82
     elif e == 4:
-        wBound = 7
+        wBound = 23
     elif e == 8:
         wBound = 7
     elif e == 9:

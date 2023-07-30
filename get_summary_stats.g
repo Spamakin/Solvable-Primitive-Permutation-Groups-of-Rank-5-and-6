@@ -1,6 +1,7 @@
-FolderPath := "/home/spamakin/projects/research/classification/results";
+# FolderPath := "/home/spamakin/projects/research/classification/results";
+FolderPath := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/results";
 
-for i in [1 .. 41] do
+for i in [1 .. 44] do
     for et in ["-","+"] do
         CurrFile := Concatenation(FolderPath, "/line", String(i), et, ".g");
         Read(CurrFile);;
@@ -90,6 +91,12 @@ GroupList := [
     Line40PlusGrps,
     Line41MinusGrps,
     Line41PlusGrps,
+    Line42MinusGrps,
+    Line42PlusGrps,
+    Line43MinusGrps,
+    Line43PlusGrps,
+    Line44MinusGrps,
+    Line44PlusGrps
 ];;
 
 LineQMPKD := [ # only cases where b = 1
@@ -124,19 +131,22 @@ LineQMPKD := [ # only cases where b = 1
     [29, 2, 1, 79, 1, 2],
     [30, 2, 1, 83, 1, 2],
     [31, 2, 2, 3, 1, 4],
-    [32, 2, 2, 5, 1, 4],
-    [33, 2, 2, 7, 1, 4],
-    [34, 2, 3, 3, 1, 8],
-    [35, 2, 3, 5, 1, 8],
-    [36, 3, 1, 2, 2, 6],
-    [37, 3, 1, 2, 4, 12],
-    [38, 3, 1, 5, 2, 6],
-    [39, 3, 1, 7, 1, 3],
-    [40, 3, 1, 13, 1, 3],
-    [41, 3, 1, 19, 1, 3],
+    [32, 2, 2, 3, 2, 8],
+    [33, 2, 2, 5, 1, 4],
+    [34, 2, 2, 7, 1, 4],
+    [35, 2, 2, 11, 1, 4],
+    [36, 2, 2, 13, 1, 4],
+    [37, 2, 3, 3, 1, 8],
+    [38, 2, 3, 5, 1, 8],
+    [39, 3, 1, 2, 2, 6],
+    [40, 3, 1, 2, 4, 12],
+    [41, 3, 1, 5, 2, 6],
+    [42, 3, 1, 7, 1, 3],
+    [43, 3, 1, 13, 1, 3],
+    [44, 3, 1, 19, 1, 3],
 ];;
 
-for i in [1 .. 41] do
+for i in [1 .. 44] do
     q := LineQMPKD[i][2];
     m := LineQMPKD[i][3];
     p := LineQMPKD[i][4];

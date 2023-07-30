@@ -495,6 +495,22 @@ q, m, p, k, d, et = 2, 2, 3, 1, 4, +
   Number of rank 5 = 0
 
 Line 32-:
+q, m, p, k, d, et = 2, 2, 3, 2, 8, -
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 32+:
+q, m, p, k, d, et = 2, 2, 3, 2, 8, +
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 33-:
 q, m, p, k, d, et = 2, 2, 5, 1, 4, -
 1 groups
   Number of rank 2 = 0
@@ -502,7 +518,7 @@ q, m, p, k, d, et = 2, 2, 5, 1, 4, -
   Number of rank 4 = 0
   Number of rank 5 = 1
 
-Line 32+:
+Line 33+:
 q, m, p, k, d, et = 2, 2, 5, 1, 4, +
 5 groups
   Number of rank 2 = 0
@@ -510,7 +526,7 @@ q, m, p, k, d, et = 2, 2, 5, 1, 4, +
   Number of rank 4 = 5
   Number of rank 5 = 0
 
-Line 33-:
+Line 34-:
 q, m, p, k, d, et = 2, 2, 7, 1, 4, -
 2 groups
   Number of rank 2 = 0
@@ -518,7 +534,7 @@ q, m, p, k, d, et = 2, 2, 7, 1, 4, -
   Number of rank 4 = 0
   Number of rank 5 = 1
 
-Line 33+:
+Line 34+:
 q, m, p, k, d, et = 2, 2, 7, 1, 4, +
 0 groups
   Number of rank 2 = 0
@@ -526,24 +542,8 @@ q, m, p, k, d, et = 2, 2, 7, 1, 4, +
   Number of rank 4 = 0
   Number of rank 5 = 0
 
-Line 34-:
-q, m, p, k, d, et = 2, 3, 3, 1, 8, -
-5 groups
-  Number of rank 2 = 0
-  Number of rank 3 = 0
-  Number of rank 4 = 0
-  Number of rank 5 = 5
-
-Line 34+:
-q, m, p, k, d, et = 2, 3, 3, 1, 8, +
-2 groups
-  Number of rank 2 = 0
-  Number of rank 3 = 0
-  Number of rank 4 = 0
-  Number of rank 5 = 2
-
 Line 35-:
-q, m, p, k, d, et = 2, 3, 5, 1, 8, -
+q, m, p, k, d, et = 2, 2, 11, 1, 4, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -551,7 +551,7 @@ q, m, p, k, d, et = 2, 3, 5, 1, 8, -
   Number of rank 5 = 0
 
 Line 35+:
-q, m, p, k, d, et = 2, 3, 5, 1, 8, +
+q, m, p, k, d, et = 2, 2, 11, 1, 4, +
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -559,7 +559,7 @@ q, m, p, k, d, et = 2, 3, 5, 1, 8, +
   Number of rank 5 = 0
 
 Line 36-:
-q, m, p, k, d, et = 3, 1, 2, 2, 6, -
+q, m, p, k, d, et = 2, 2, 13, 1, 4, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -567,31 +567,31 @@ q, m, p, k, d, et = 3, 1, 2, 2, 6, -
   Number of rank 5 = 0
 
 Line 36+:
-q, m, p, k, d, et = 3, 1, 2, 2, 6, +
-7 groups
-  Number of rank 2 = 0
-  Number of rank 3 = 5
-  Number of rank 4 = 2
-  Number of rank 5 = 0
-
-Line 37-:
-q, m, p, k, d, et = 3, 1, 2, 4, 12, -
+q, m, p, k, d, et = 2, 2, 13, 1, 4, +
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
   Number of rank 4 = 0
   Number of rank 5 = 0
 
-Line 37+:
-q, m, p, k, d, et = 3, 1, 2, 4, 12, +
-1 groups
+Line 37-:
+q, m, p, k, d, et = 2, 3, 3, 1, 8, -
+5 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
   Number of rank 4 = 0
-  Number of rank 5 = 1
+  Number of rank 5 = 5
+
+Line 37+:
+q, m, p, k, d, et = 2, 3, 3, 1, 8, +
+2 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 2
 
 Line 38-:
-q, m, p, k, d, et = 3, 1, 5, 2, 6, -
+q, m, p, k, d, et = 2, 3, 5, 1, 8, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -599,7 +599,7 @@ q, m, p, k, d, et = 3, 1, 5, 2, 6, -
   Number of rank 5 = 0
 
 Line 38+:
-q, m, p, k, d, et = 3, 1, 5, 2, 6, +
+q, m, p, k, d, et = 2, 3, 5, 1, 8, +
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -607,7 +607,7 @@ q, m, p, k, d, et = 3, 1, 5, 2, 6, +
   Number of rank 5 = 0
 
 Line 39-:
-q, m, p, k, d, et = 3, 1, 7, 1, 3, -
+q, m, p, k, d, et = 3, 1, 2, 2, 6, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -615,15 +615,15 @@ q, m, p, k, d, et = 3, 1, 7, 1, 3, -
   Number of rank 5 = 0
 
 Line 39+:
-q, m, p, k, d, et = 3, 1, 7, 1, 3, +
-4 groups
+q, m, p, k, d, et = 3, 1, 2, 2, 6, +
+7 groups
   Number of rank 2 = 0
-  Number of rank 3 = 0
-  Number of rank 4 = 3
-  Number of rank 5 = 1
+  Number of rank 3 = 5
+  Number of rank 4 = 2
+  Number of rank 5 = 0
 
 Line 40-:
-q, m, p, k, d, et = 3, 1, 13, 1, 3, -
+q, m, p, k, d, et = 3, 1, 2, 4, 12, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -631,15 +631,15 @@ q, m, p, k, d, et = 3, 1, 13, 1, 3, -
   Number of rank 5 = 0
 
 Line 40+:
-q, m, p, k, d, et = 3, 1, 13, 1, 3, +
-0 groups
+q, m, p, k, d, et = 3, 1, 2, 4, 12, +
+1 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
   Number of rank 4 = 0
-  Number of rank 5 = 0
+  Number of rank 5 = 1
 
 Line 41-:
-q, m, p, k, d, et = 3, 1, 19, 1, 3, -
+q, m, p, k, d, et = 3, 1, 5, 2, 6, -
 0 groups
   Number of rank 2 = 0
   Number of rank 3 = 0
@@ -647,6 +647,54 @@ q, m, p, k, d, et = 3, 1, 19, 1, 3, -
   Number of rank 5 = 0
 
 Line 41+:
+q, m, p, k, d, et = 3, 1, 5, 2, 6, +
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 42-:
+q, m, p, k, d, et = 3, 1, 7, 1, 3, -
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 42+:
+q, m, p, k, d, et = 3, 1, 7, 1, 3, +
+4 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 3
+  Number of rank 5 = 1
+
+Line 43-:
+q, m, p, k, d, et = 3, 1, 13, 1, 3, -
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 43+:
+q, m, p, k, d, et = 3, 1, 13, 1, 3, +
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 44-:
+q, m, p, k, d, et = 3, 1, 19, 1, 3, -
+0 groups
+  Number of rank 2 = 0
+  Number of rank 3 = 0
+  Number of rank 4 = 0
+  Number of rank 5 = 0
+
+Line 44+:
 q, m, p, k, d, et = 3, 1, 19, 1, 3, +
 0 groups
   Number of rank 2 = 0
