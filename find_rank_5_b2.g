@@ -59,10 +59,10 @@ for et in ["+", "-"] do
 
     # Check every subgroup class of N for the properties we require of G
     #
-    for G in List(ConjugacyClassesSubgroups(N), Representative) do
-        if IsSolvable(G) and IsPrimitiveMatrixGroup(G) and IsIrreducibleMatrixGroup(G) then
-            G0 := Image(permeb, G);
-            rank := Size(Orbits(G0)) + 1;
+    for G0 in List(ConjugacyClassesSubgroups(N), Representative) do
+        if IsSolvable(G0) and IsPrimitiveMatrixGroup(G0) and IsIrreducibleMatrixGroup(G0) then
+            G0Perm := Image(permeb, G0);
+            rank := Size(Orbits(G0Perm)) + 1;
             if rank <= 5 then
                 Print("    Checking if E is a subgroup of G0\n");
                 Cons := ExactSizeConsiderFunction(q^(2*m+1));
