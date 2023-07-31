@@ -1,7 +1,7 @@
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/spamakin/projects/research/classification/results";;
+OutputDirr := "/home/ec2-user/classification/results";;
 
-line := 42;;
+line := 45;;
 q := 2;;
 m := 1;;
 d := 4;;
@@ -11,14 +11,14 @@ b := 2;;
 
 Print("Computing permutation representations for GL(q^m, p^k) and GL(q^m * b, p)\n");
 GLe := GL(q^m,p^k);;
-GLeb := GL(q^m*b,p^k);;
+GLeb := GL(q^m*b,p);;
 perme := IsomorphismPermGroup(GLe);;
 permeb := IsomorphismPermGroup(GLeb);;
 GLePerm := Image(perme,GLe);;
 GLebPerm := Image(permeb,GLeb);;
 
 for et in ["+", "-"] do
-    Print("\n", "q = ", q, ", m = ", m, ", p = ", p, ", k = ", k, ", d = ", d, "b = ", b, "et = ", et, "\n");
+    Print("\n", "q = ", q, ", m = ", m, ", p = ", p, ", k = ", k, ", d = ", d, ", b = ", b, ", et = ", et, "\n");
 
     OutputFile := Concatenation(OutputDirr, "/line", String(line), et, ".g");
     PrintTo(OutputFile, "");;
@@ -54,7 +54,7 @@ for et in ["+", "-"] do
     embedding := GroupHomomorphismByImages(GLe, GLeb, GLeGens, GLebGens);
     NAeb := Image(embedding, NA);
 
-    # Take the second normalizer in GL(q^m*b,p^k)
+    # Take the second normalizer in GL(q^m*b,p)
     N := Normalizer(GLeb, NAeb);
 
     # Check every subgroup class of N for the properties we require of G
@@ -78,7 +78,7 @@ for et in ["+", "-"] do
                 Print("    Checking if we've seen G0 before\n");
                 failed := false;
                 for H in groupList do
-                    HPerm := Image(permp, H);
+                    HPerm := Image(permeb, H);
                     prevRank := Size(Orbits(HPerm)) + 1;
                     if (rank = prevRank) and (IsomorphismGroups(G0, H) <> fail) then
                         failed := true;
