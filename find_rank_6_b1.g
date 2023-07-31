@@ -3,7 +3,7 @@ LineQMPKD := [ # only cases where b = 1
     # [2, 2, 1, 3, 2, 4],
     # [3, 2, 1, 3, 3, 6],
     # [4, 2, 1, 3, 4, 8],
-    [5, 2, 1, 3, 5, 10], # come back to for -
+    # [5, 2, 1, 3, 5, 10], # come back to for -
     # [6, 2, 1, 5, 1, 2],
     # [7, 2, 1, 5, 2, 4],
     # [8, 2, 1, 5, 3, 6],
@@ -41,7 +41,7 @@ LineQMPKD := [ # only cases where b = 1
     # [40, 2, 2, 7, 1, 4],
     # [41, 2, 2, 11, 1, 4],
     # [42, 2, 2, 13, 1, 4],
-    # [43, 2, 3, 3, 1, 8], # come back to
+    [43, 2, 3, 3, 1, 8], # come back to
     # [44, 2, 3, 5, 1, 8],
     # [45, 3, 1, 2, 2, 6],
     # [46, 3, 1, 2, 4, 12],
@@ -54,8 +54,7 @@ LineQMPKD := [ # only cases where b = 1
 
 
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-# OutputDirr := "/home/spamakin/projects/research/classification/rank_6_results";;
-OutputDirr := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank_6_results";
+OutputDirr := "/home/ec2-user/classification/6_results";;
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
@@ -74,8 +73,8 @@ for lqmpkd in LineQMPKD do
     GLpPerm := Image(permp,GLp);
 
     # for et in ["+"] do
-    # for et in ["-"] do
-    for et in ["+","-"] do
+    for et in ["-"] do
+    # for et in ["+","-"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
         OutputFile := Concatenation(OutputDirr, "/line", String(line), et, ".g");
@@ -140,18 +139,7 @@ for lqmpkd in LineQMPKD do
             #   G0 Irreducible
             #   If in B then G0 is primitive matrix group
             #   rank <= 6
-            if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank <= 6 then
-                Print("    Checking if E is a subgroup of G0\n");
-                Cons := ExactSizeConsiderFunction(q^(2*m+1));
-                SubGrps := SubgroupsSolvableGroup(G0 : consider:=Cons);
-                Found := false;
-                for SubGrp in SubGrps do
-                    if not Found and IsomorphismGroups(Extraspecial, SubGrp) <> fail then
-                        Found := true;
-                    fi;
-                od;
-                if not Found then continue; fi;
-
+            if IsSolvable(G0) and IsIrreducibleMatrixGroup(G0) and IsPrimitiveMatrixGroup(G0, GF(p)) and rank = 6 then
                 Print("    Checking if we've seen G0 before\n");
                 failed := false;
                 for H in groupList do
@@ -162,7 +150,20 @@ for lqmpkd in LineQMPKD do
                     fi;
                 od;
                 if failed then continue; fi;
+                
                 Append(groupList, [G0]);
+		
+		Print("    Checking if E is a subgroup of G0\n");
+                Cons := ExactSizeConsiderFunction(q^(2*m+1));
+                SubGrps := SubgroupsSolvableGroup(G0 : consider:=Cons);
+                Found := false;
+                for SubGrp in SubGrps do
+                    if not Found and IsomorphismGroups(Extraspecial, SubGrp) <> fail then
+                        Found := true;
+                    fi;
+                od;
+                if not Found then continue; fi;
+
 
                 NumGrps := NumGrps + 1;
                 if Order(G0) > MaxOrder then
