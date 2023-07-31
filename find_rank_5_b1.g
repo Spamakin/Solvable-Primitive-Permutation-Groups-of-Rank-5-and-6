@@ -47,7 +47,7 @@ LineQMPKD := [ # only cases where b = 1
 
 
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/spamakin/projects/research/classification/results";;
+OutputDirr := "/home/ec2-user/classification/results";;
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
