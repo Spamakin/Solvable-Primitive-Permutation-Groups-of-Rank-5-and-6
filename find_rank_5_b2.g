@@ -1,5 +1,5 @@
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/ec2-user/classification/results";;
+OutputDirr := "/home/spamakin/projects/research/classification/results";;
 
 line := 45;;
 q := 2;;
