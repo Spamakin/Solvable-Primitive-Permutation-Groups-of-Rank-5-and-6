@@ -7,7 +7,7 @@
 # and x in this case is the Kronecker product
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/ec2-user/classification/results";;
+CurrDir := "/home/spamakin/projects/research/classification/6_results";;
 # Begin Formatting file
 OutputFile := Concatenation(CurrDir, "/line62.g");;
 PrintTo(OutputFile, "");;

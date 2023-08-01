@@ -107,6 +107,8 @@
         \hline
         51 & 3 & 2 & 2 & 2 & 18 & 6 \\ 
         \hline
+        52 & 6 & 1 & 7 & 1 & 6 & 2 \\ 
+        \hline
     \end{tabular}
 \end{table}
 
@@ -118,9 +120,9 @@
         \hline
         lines & $q$ & $m$ & $p$ & $k$ & $d$ & rank $\geq$ \\ 
         \hline
-        52 & 2 & 1 & 3 & 1 & 4 & 4 \\ 
+        53 & 2 & 1 & 3 & 1 & 4 & 4 \\ 
         \hline
-        53 & 2 & 2 & 3 & 1 & 8 & 6 \\ 
+        54 & 2 & 2 & 3 & 1 & 8 & 6 \\ 
         \hline
     \end{tabular}
 \end{table}

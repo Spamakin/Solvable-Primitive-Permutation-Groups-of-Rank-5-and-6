@@ -155,6 +155,8 @@ for e in [2, 3, 4, 5, 7, 8, 9, 16]:
 
         w += ep
 
+# 6 is my favorite prime number
+final_params_b1.append([6, 1, 7, 1, 6, 2])
 final_params_b1.sort()
 final_params_b2.sort()
 

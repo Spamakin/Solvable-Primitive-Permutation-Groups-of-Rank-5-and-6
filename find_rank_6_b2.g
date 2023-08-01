@@ -2,8 +2,8 @@
 OutputDirr := "/home/ec2-user/classification/6_results";;
 
 LineQMPKD := [ # only cases where b > 1
-    [52, 2, 1, 3, 1, 4],
-    [53, 2, 2, 3, 1, 8],
+    [53, 2, 1, 3, 1, 4],
+    [54, 2, 2, 3, 1, 8],
 ];;
 
 for lqmpkd in LineQMPKD do
