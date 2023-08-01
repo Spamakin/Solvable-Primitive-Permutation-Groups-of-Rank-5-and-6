@@ -1,5 +1,5 @@
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/spamakin/projects/research/classification/results";;
+OutputDirr := "/home/ec2-user/classification/6_results";;
 
 LineQMPKD := [ # only cases where b > 1
     [52, 2, 1, 3, 1, 4],
@@ -13,7 +13,7 @@ for lqmpkd in LineQMPKD do
     p := lqmpkd[4];
     k := lqmpkd[5];
     d := lqmpkd[6];
-    b := Int(d / (k * q^m))
+    b := Int(d / (k * q^m));
 
     Print("Computing permutation representations for GL(q^m, p^k) and GL(q^m * b, p)\n");
     GLe := GL(q^m,p^k);;
