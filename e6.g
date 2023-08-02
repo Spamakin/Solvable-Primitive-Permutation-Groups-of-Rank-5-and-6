@@ -48,7 +48,7 @@ for G2 in LinGrp2Cong do
             # Compute Rank
             GPerm := Image(iso, G);;
             rank := Size(Orbits(GPerm)) + 1;;
-            if rank <= 5 then
+            if rank <= 6 then
                 Print("!! FOUND RANK = ", rank, "\n");
                 AppendTo(OutputFile,"    ", G, ",\n");;
                 SeenLowRank2 := true;;
