@@ -1,9 +1,20 @@
-# FolderPath := "/home/spamakin/projects/research/classification/results";
-FolderPath := "/home/kolton/texas_reu/Solvable-Primitive-Permutation-Groups-of-Rank-5/rank_6_results";
+FolderPath := "/home/spamakin/projects/research/classification/6_results";;
 
+# b = 1, e <> 6
 for i in [1 .. 51] do
     for et in ["-","+"] do
-        CurrFile := Concatenation(FolderPath, "/line", String(i), et, ".g");
+        CurrFile := Concatenation(FolderPath, "/line", String(i), et, ".g");;
+        Read(CurrFile);;
+    od;
+od;
+# e = 6
+CurrFile := Concatenation(FolderPath, "/line52.g");;
+Read(CurrFile);;
+
+# b > 1
+for i in [53, 54] do
+    for et in ["-","+"] do
+        CurrFile := Concatenation(FolderPath, "/line", String(i), et, ".g");;
         Read(CurrFile);;
     od;
 od;
@@ -113,7 +124,7 @@ GroupList := [
     Line51PlusGrps
 ];;
 
-LineQMPKD := [ # only cases where b = 1
+LineQMPKD := [ # only cases where b = 1, e <> 6
     [1, 2, 1, 3, 1, 2],
     [2, 2, 1, 3, 2, 4],
     [3, 2, 1, 3, 3, 6],
@@ -186,16 +197,92 @@ for i in [1 .. 51] do
             GLp := GL(k * q^m, p);
             permp := IsomorphismPermGroup(GLp);
         for G0 in Grps do
-            G0Perm := Image(permp, G0);
-            rank := Size(Orbits(G0Perm)) + 1;
+            G0perm := Image(permp, G0);
+            rank := Size(Orbits(G0perm)) + 1;
             Ranks[rank] := Ranks[rank] + 1;
         od;
-        Print(Size(Grps), " groups\n");
+        Print(Size(Grps), " Groups\n");
         for rank in [2..6] do
-            Print("  Number of rank ", rank, " = ", Ranks[rank], "\n");
+            Print("  Number of Rank ", rank, " = ", Ranks[rank], "\n");
         od;
         Print("\n");
     od;
 od;
 
-QUIT;
+GroupList := [
+    Line52Grps,
+];;
+
+LineQMPKD := [ # only cases where b = 1, e = 6
+    [52, 6, 1, 7, 1, 6],
+];;
+
+for i in [1] do
+    q := LineQMPKD[i][2];
+    m := LineQMPKD[i][3];
+    p := LineQMPKD[i][4];
+    k := LineQMPKD[i][5];
+    d := LineQMPKD[i][6];
+    Print("Line ", 52, ":\n");
+    Print("q, m, p, k, d, et = ", q, ", ", m, ", ", p, ", ", k, ", ", d, "\n");
+    Grps := GroupList[1];
+    Ranks := [0, 0, 0, 0, 0, 0];
+        GLp := GL(k * q^m, p);
+        permp := IsomorphismPermGroup(GLp);
+    for G0 in Grps do
+        G0Perm := Image(permp, G0);
+        rank := Size(Orbits(G0Perm)) + 1;
+        Ranks[rank] := Ranks[rank] + 1;
+    od;
+    Print(Size(Grps), " groups\n");
+    for rank in [2..6] do
+        Print("  Number of rank ", rank, " = ", Ranks[rank], "\n");
+    od;
+    Print("\n");
+od;
+
+
+GroupList := [
+    Line53MinusGrps,
+    Line53PlusGrps,
+    Line54MinusGrps,
+    Line54PlusGrps
+];;
+
+LineQMPKD := [ # only cases where b > 1
+    [53, 2, 1, 3, 1, 4],
+    [54, 2, 2, 3, 1, 8],
+];;
+
+for i in [1, 2] do
+    q := LineQMPKD[i][2];
+    m := LineQMPKD[i][3];
+    p := LineQMPKD[i][4];
+    k := LineQMPKD[i][5];
+    d := LineQMPKD[i][6];
+    for et in ["-","+"] do
+        if et = "-" then
+            j := 2 * i - 1;
+        else
+            j := 2 * i;
+        fi;
+        Print("Line ", i + 52, et, ":\n");
+        Print("q, m, p, k, d, et = ", q, ", ", m, ", ", p, ", ", k, ", ", d, ", ", et, "\n");
+        Grps := GroupList[j];
+        Ranks := [0, 0, 0, 0, 0, 0];
+            GLp := GL(k * q^m * 2, p); # b = 2 in both cases
+            permp := IsomorphismPermGroup(GLp);
+        for G0 in Grps do
+            G0perm := Image(permp, G0);
+            rank := Size(Orbits(G0perm)) + 1;
+            Ranks[rank] := Ranks[rank] + 1;
+        od;
+        Print(Size(Grps), " Groups\n");
+        for rank in [2..6] do
+            Print("  Number of Rank ", rank, " = ", Ranks[rank], "\n");
+        od;
+        Print("\n");
+    od;
+od;
+
+quit;
