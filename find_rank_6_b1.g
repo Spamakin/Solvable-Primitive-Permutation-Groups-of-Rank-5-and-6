@@ -54,7 +54,7 @@ LineQMPKD := [ # only cases where b = 1
 
 
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/ec2-user/classification/6_results";;
+OutputDirr := "/gpfs/home/iiz11/classification/6_results";;
 
 for lqmpkd in LineQMPKD do
     line := lqmpkd[1];
@@ -73,8 +73,8 @@ for lqmpkd in LineQMPKD do
     GLpPerm := Image(permp,GLp);
 
     # for et in ["+"] do
-    # for et in ["-"] do
-    for et in ["+","-"] do
+    for et in ["-"] do
+    # for et in ["+","-"] do
 
         Print("q = ", String(q), ", m = ", String(m), ", p = ", String(p), ", k = ", String(k), ", d = ", String(d), ", et = ", et, "\n");
         OutputFile := Concatenation(OutputDirr, "/line", String(line), et, ".g");

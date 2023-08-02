@@ -7,11 +7,11 @@
 # and x in this case is the Kronecker product
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/home/spamakin/projects/research/classification/6_results";;
+CurrDir := "/gpfs/home/iiz11/classification/6_results";;
 # Begin Formatting file
-OutputFile := Concatenation(CurrDir, "/line62.g");;
+OutputFile := Concatenation(CurrDir, "/line52.g");;
 PrintTo(OutputFile, "");;
-AppendTo(OutputFile, "Line62Grps := [ \n");;
+AppendTo(OutputFile, "Line52Grps := [ \n");;
 
 LinGrp2 := GL(2, 7);;
 LinGrp3 := GL(3, 7);;

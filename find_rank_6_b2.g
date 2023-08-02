@@ -1,5 +1,5 @@
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/home/ec2-user/classification/6_results";;
+OutputDirr := "/gpfs/home/iiz11/classification/6_results";;
 
 LineQMPKD := [ # only cases where b > 1
     [53, 2, 1, 3, 1, 4],
