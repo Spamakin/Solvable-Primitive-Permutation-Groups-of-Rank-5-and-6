@@ -1,5 +1,5 @@
 # CHANGE THIS TO THE DIRECTORY YOU WANT TO SAVE STUFF IN
-OutputDirr := "/gpfs/home/iiz11/classification/6_results";;
+OutputDirr := "/home/spamakin/projects/research/classification/results";;
 
 LineQMPKD := [ # only cases where b > 1
     [53, 2, 1, 3, 1, 4],

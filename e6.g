@@ -1,13 +1,12 @@
-# for now, e = 6 is its own file
-
 # We are interested in G0 Primitive Solvable <= GL(6, 7);
-# By {TODO: Reference} we know that G0 takes the form G2 x G3 where
+# By Lemma 3.2 we know that G0 takes the form G2 x G3 where
 #   G2 Primitive Solvable <= GL(2, 7);
 #   G3 Primitive Solvable <= GL(3, 7);
 # and x in this case is the Kronecker product
 
 # Change this to wherever you want to have the output file.
 CurrDir := "/gpfs/home/iiz11/classification/6_results";;
+
 # Begin Formatting file
 OutputFile := Concatenation(CurrDir, "/line52.g");;
 PrintTo(OutputFile, "");;

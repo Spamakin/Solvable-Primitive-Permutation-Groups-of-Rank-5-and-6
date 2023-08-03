@@ -1,4 +1,0 @@
-[main 63fb78d] Computer a few more cases [see comments]. Only k cases left to calculate. Slow part is the GL embedding, otherwise all checks out :]
- 4 files changed, 52 insertions(+), 46 deletions(-)
- create mode 100644 1
- rewrite ConstructPrimitiveIrreducible.g (95%)

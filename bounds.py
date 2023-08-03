@@ -1,7 +1,5 @@
 import math
 
-# TODO: When writing paper, sync up different facts to references in paper
-
 # Python3 implementation to check
 # if a number is a prime power number
 is_prime = [True for i in range(10**6 + 1)]
@@ -67,10 +65,13 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         afBound = 24
     elif e == 9:
         afBound = (24**2) * 2
+    elif e == 5:
+        afBound = 24
+    elif e == 7:
+        afBound = 48
 
-    factorsList = getDivisors(dim * afBound * e * e * (w - 1))[
-        ::-1
-    ]  # biggest factor is first
+    # biggest factor is first
+    factorsList = getDivisors(dim * afBound * e**2 * (w - 1))[::-1]
     temp = w ** (e * b) - 1
     rank = 1
 
@@ -83,6 +84,34 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
     return rank
 
 
+def getOldRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
+    q = 0
+    if e % 2 == 0:
+        q = 2
+    else:
+        q = 3
+    m = round(math.log(e, q))
+
+    if e == 2:
+        afBound = 6
+    elif e == 4:
+        afBound = (6**2) * 2
+    elif e == 8:
+        afBound = 6**4
+    elif e == 16:
+        afBound = (6**4) * 24
+    elif e == 3:
+        afBound = 24
+    elif e == 9:
+        afBound = (24**2) * 2
+    elif e == 5:
+        afBound = 24
+    elif e == 7:
+        afBound = 48
+
+    return ((w ** (e * b) - 1) / (dim * afBound * e**2 * (w - 1))) + 1
+
+
 final_params_b1 = []
 final_params_b2 = []
 
@@ -90,21 +119,26 @@ for e in [2, 3, 4, 8, 9, 16]:
     if e % 2 == 0:
         ep = 2  # prime part of e
         w = 3  # |W|
-    else:
+    elif e % 3 == 0:
         ep = 3
         w = 4
+    elif e % 5 == 0:
+        ep = 5
+        w = 6
+    elif e % 7 == 0:
+        ep = 7
+        w = 8
 
-    # through theoretical analysis, if w > 1230, the rank will always be >5
     if e == 2:
-        wBound = 1230
+        wBound = 1511
     elif e == 3:
-        wBound = 82
+        wBound = 79
     elif e == 4:
-        wBound = 23
+        wBound = 31
     elif e == 8:
         wBound = 7
     elif e == 9:
-        wBound = 5
+        wBound = 4
     elif e == 16:
         wBound = 3
     while w <= wBound:
@@ -117,11 +151,14 @@ for e in [2, 3, 4, 8, 9, 16]:
 
         b = 1
         while True:
-            numSuccesses = 0
+            tryNextB = False
             for dim in getDivisors(k):
+                oldRankLowerBound = getOldRankEstimate(e, w, b, dim)
+                if oldRankLowerBound <= 6:
+                    tryNextB = True
+
                 rankLowerBound = getRankEstimate(e, w, b, dim)
-                if rankLowerBound <= 5:
-                    numSuccesses += 1
+                if rankLowerBound <= 6:
                     rankLowerBound = math.ceil(rankLowerBound)
                     q, m = powerOfPrime(e)  # e = q^m
                     if dim != k:
@@ -135,13 +172,17 @@ for e in [2, 3, 4, 8, 9, 16]:
                             [q, m, p, k, dim * e * b, rankLowerBound]
                         )
 
-            # stop incrementing b if the rank estimate gets too high; increasing b can only increase the estimate
-            if numSuccesses == 0:
+            # stop incrementing b if the old rank estimate gets too high; increasing b can only increase the estimate
+            # we need this because the greedy algorithm rank estimate could potentially decrease as b increases
+            if tryNextB:
+                b += 1
+            else:
                 break
-            b += 1
 
         w += ep
 
+# 6 is my favorite prime number
+final_params_b1.append([6, 1, 7, 1, 6, 2])
 final_params_b1.sort()
 final_params_b2.sort()
 
