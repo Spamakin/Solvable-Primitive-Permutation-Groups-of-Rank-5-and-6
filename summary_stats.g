@@ -1,7 +1,7 @@
 # Utility to help enumerate all groups
 
 # Change this to point to where the results are stored
-FolderPath := "/home/spamakin/projects/research/classification/6_results";;
+FolderPath := "/home/spamakin/projects/research/classification/results";;
 
 # Load all groups
 # b = 1, e <> 6
