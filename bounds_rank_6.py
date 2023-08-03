@@ -85,6 +85,33 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
 
     return rank
 
+def getOldRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
+    q = 0
+    if e % 2 == 0:
+        q = 2
+    else:
+        q = 3
+    m = round(math.log(e, q))
+
+    if e == 2:
+        afBound = 6
+    elif e == 4:
+        afBound = (6**2) * 2
+    elif e == 8:
+        afBound = 6**4
+    elif e == 16:
+        afBound = (6**4) * 24
+    elif e == 3:
+        afBound = 24
+    elif e == 9:
+        afBound = (24**2) * 2
+    elif e == 5:
+        afBound = 24
+    elif e == 7:
+        afBound = 48
+
+    return ((w ** (e * b) - 1) / (dim * afBound * e**2 * (w - 1))) + 1
+
 
 final_params_b1 = []
 final_params_b2 = []
@@ -125,11 +152,14 @@ for e in [2, 3, 4, 8, 9, 16]:
 
         b = 1
         while True:
-            numSuccesses = 0
+            tryNextB = False
             for dim in getDivisors(k):
+                oldRankLowerBound = getOldRankEstimate(e, w, b, dim)
+                if oldRankLowerBound <= 6:
+                    tryNextB = True
+
                 rankLowerBound = getRankEstimate(e, w, b, dim)
                 if rankLowerBound <= 6:
-                    numSuccesses += 1
                     rankLowerBound = math.ceil(rankLowerBound)
                     q, m = powerOfPrime(e)  # e = q^m
                     if dim != k:
@@ -143,10 +173,13 @@ for e in [2, 3, 4, 8, 9, 16]:
                             [q, m, p, k, dim * e * b, rankLowerBound]
                         )
 
-            # stop incrementing b if the rank estimate gets too high; increasing b can only increase the estimate
-            if numSuccesses == 0:
+            # stop incrementing b if the old rank estimate gets too high; increasing b can only increase the estimate
+            # we need this because the greedy algorithm rank estimate could potentially decrease as b increases
+            if tryNextB:
+                b += 1
+            else:
                 break
-            b += 1
+            
 
         w += ep
 
