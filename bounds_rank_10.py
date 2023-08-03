@@ -93,7 +93,7 @@ final_params_b2 = []
 for e in [2, 3, 4, 5, 7, 8, 9, 16]:
     if e % 2 == 0:
         ep = 2  # prime part of e
-        w = 3   # |W|
+        w = 3  # |W|
     elif e % 3 == 0:
         ep = 3
         w = 4

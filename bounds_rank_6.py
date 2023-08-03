@@ -72,9 +72,8 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
     elif e == 7:
         afBound = 48
 
-    factorsList = getDivisors(dim * afBound * e * e * (w - 1))[
-        ::-1
-    ]  # biggest factor is first
+    # biggest factor is first
+    factorsList = getDivisors(dim * afBound * e**2 * (w - 1))[::-1]
     temp = w ** (e * b) - 1
     rank = 1
 
@@ -90,7 +89,7 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
 final_params_b1 = []
 final_params_b2 = []
 
-for e in [2, 3, 4, 5, 7, 8, 9, 16]:
+for e in [2, 3, 4, 8, 9, 16]:
     if e % 2 == 0:
         ep = 2  # prime part of e
         w = 3  # |W|
@@ -105,19 +104,15 @@ for e in [2, 3, 4, 5, 7, 8, 9, 16]:
         w = 8
 
     if e == 2:
-        wBound = 1521
+        wBound = 1511
     elif e == 3:
-        wBound = 91
+        wBound = 79
     elif e == 4:
-        wBound = 32
-    elif e == 5:
-        wBound = 10
-    elif e == 7:
-        wBound = 5
+        wBound = 31
     elif e == 8:
         wBound = 7
     elif e == 9:
-        wBound = 5
+        wBound = 4
     elif e == 16:
         wBound = 3
     while w <= wBound:
