@@ -2,7 +2,7 @@
 
 Here we describe in `GAP` code the examples stated in Section 4 of our paper. We make heavy use of the fact that `IdGroup` is an isomorphism invariant in `GAP`.
 
-### Isomorphic Groups with Two Extraspecial Subgroups
+### Example 4.1: Isomorphic Groups with Two Extraspecial Subgroups
 
 One example described is a set of parameters, namely Line 3 in Table 4, has isomorphic groups corresponding to an extraspecial group of type `-` and `+`.
 ```
@@ -34,7 +34,7 @@ gap> Size(Orbits(G0Perm)) + 1;
 5
 ```
 
-### Isomorphic Groups of Different Rank
+### Example 4.2: Isomorphic Groups of Different Rank
 
 Within the same set of parameters, it is possible that two isomorphic groups `G_0` may have a different number of orbits when acting on `V`.
 Consider the following set of parameters along with extraspecial group type `+`:
@@ -66,7 +66,7 @@ gap> Size(Orbits(G0Perm)) + 1;
 5
 ```
 
-### Isomorphic Groups of the Same Rank in B\_1 and B_>
+### Example 4.3: Isomorphic Groups of the Same Rank in B\_1 and B_>
 
 It is possible for two sets of parameters, one where `b = 1` and another where `b = 2`, to both produce isomorphic groups of the same rank.
 Consider the following sets of parameters:
