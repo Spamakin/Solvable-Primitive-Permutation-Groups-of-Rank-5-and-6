@@ -110,3 +110,10 @@ gap> G0Perm := Image(permp, Line53MinusGrps[1]);
 gap> Size(Orbits(G0Perm)) + 1;
 4
 ```
+
+### Long Computations
+
+On an AWS `t3.2xlarge` instance, computing `line51+.g` took 192 hours.
+For context,  computing every single other parameter all together should take under 24 hours.
+This includes `line51-.g`.
+It is currently unclear why this particular set took significantly longer.

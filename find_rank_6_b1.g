@@ -49,7 +49,7 @@ LineQMPKD := [ # only cases where b = 1
     [48, 3, 1, 7, 1, 3],
     [49, 3, 1, 13, 1, 3],
     [50, 3, 1, 19, 1, 3],
-    [51, 3, 2, 2, 2, 18]  # For some reason, et "+" here takes significantly longer than every other parameter
+    [51, 3, 2, 2, 2, 18] 
 ];;
 
 
