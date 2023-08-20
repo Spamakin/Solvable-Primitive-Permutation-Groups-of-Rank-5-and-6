@@ -45,7 +45,8 @@ def getDivisors(n):
     return divisors
 
 
-def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
+def getRankEstimate(e, w, b, dim):
+    # Relies on e being in {2,3,4,8,9,16}
     q = 0
     if e % 2 == 0:
         q = 2
@@ -53,38 +54,41 @@ def getRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         q = 3
     m = round(math.log(e, q))
 
+    # List of values of |A/F|
     if e == 2:
-        afBound = 6
+        afBound = [6]
     elif e == 4:
-        afBound = (6**2) * 2
+        afBound = [60, (6**2) * 2]
     elif e == 8:
-        afBound = 6**4
+        afBound = [42, 54, (6**3) * 2, 6**4]
     elif e == 16:
-        afBound = (6**4) * 24
+        afBound = [136, (6**4) * 24]
     elif e == 3:
-        afBound = 24
+        afBound = [24]
     elif e == 9:
-        afBound = (24**2) * 2
-    elif e == 5:
-        afBound = 24
-    elif e == 7:
-        afBound = 48
+        afBound = [40, (24**2) * 2]
 
-    # biggest factor is first
-    factorsList = getDivisors(dim * afBound * e**2 * (w - 1))[::-1]
-    temp = w ** (e * b) - 1
-    rank = 1
+    # Try all possible values of |A/F|, return lowest rank value found
+    rank = float("inf")
+    for af in afBound:
+        # Biggest factor is first
+        factorsList = getDivisors(dim * af * e**2 * (w - 1))[::-1]
+        temp = w ** (e * b) - 1
+        curr_rank = 1
 
-    while temp > 0:
-        for factor in factorsList:
-            while factor <= temp:
-                temp -= factor
-                rank += 1
+        while temp > 0:
+            for factor in factorsList:
+                while factor <= temp:
+                    temp -= factor
+                    curr_rank += 1
+
+        rank = min(rank, curr_rank)
 
     return rank
 
 
-def getOldRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
+def getOldRankEstimate(e, w, b, dim):
+    # Relies on e being in {2,3,4,8,9,16}
     q = 0
     if e % 2 == 0:
         q = 2
@@ -92,6 +96,7 @@ def getOldRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         q = 3
     m = round(math.log(e, q))
 
+    # Does not depend on divisibility so use largest |A/F| bound
     if e == 2:
         afBound = 6
     elif e == 4:
@@ -104,10 +109,6 @@ def getOldRankEstimate(e, w, b, dim):  # relies on e being in {2,3,4,8,9,16}
         afBound = 24
     elif e == 9:
         afBound = (24**2) * 2
-    elif e == 5:
-        afBound = 24
-    elif e == 7:
-        afBound = 48
 
     return ((w ** (e * b) - 1) / (dim * afBound * e**2 * (w - 1))) + 1
 
@@ -122,12 +123,6 @@ for e in [2, 3, 4, 8, 9, 16]:
     elif e % 3 == 0:
         ep = 3
         w = 4
-    elif e % 5 == 0:
-        ep = 5
-        w = 6
-    elif e % 7 == 0:
-        ep = 7
-        w = 8
 
     if e == 2:
         wBound = 1511
@@ -146,7 +141,7 @@ for e in [2, 3, 4, 8, 9, 16]:
         if p == -1:
             # ep divides |W| - 1
             w += ep
-            # skip if w isn't a power of a prime
+            # Skip if w isn't a power of a prime
             continue
 
         b = 1
@@ -172,8 +167,10 @@ for e in [2, 3, 4, 8, 9, 16]:
                             [q, m, p, k, dim * e * b, rankLowerBound]
                         )
 
-            # stop incrementing b if the old rank estimate gets too high; increasing b can only increase the estimate
-            # we need this because the greedy algorithm rank estimate could potentially decrease as b increases
+            # Stop incrementing b if the old rank estimate gets too high;
+            #   increasing b can only increase the estimate
+            # We need this because the greedy algorithm rank estimate could
+            #   potentially decrease as b increases
             if tryNextB:
                 b += 1
             else:
