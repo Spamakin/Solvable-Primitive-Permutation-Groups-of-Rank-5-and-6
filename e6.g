@@ -5,10 +5,10 @@
 # and x in this case is the Kronecker product
 
 # Change this to wherever you want to have the output file.
-CurrDir := "/gpfs/home/iiz11/classification/6_results";;
+OutputDirr := "";;
 
 # Begin Formatting file
-OutputFile := Concatenation(CurrDir, "/line52.g");;
+OutputFile := Concatenation(OutputDirr, "/line52.g");;
 PrintTo(OutputFile, "");;
 AppendTo(OutputFile, "Line52Grps := [ \n");;
 

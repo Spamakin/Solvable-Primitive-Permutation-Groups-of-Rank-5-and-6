@@ -1,4 +1,4 @@
-# Primitive Solvable Permutation Groups of Rank 5 and 6
+# Classifying Primitive Solvable Permutation Groups of Rank 5 and 6
 
 ### Tour of the Repository
 
@@ -8,7 +8,7 @@ The `GAP` files [`find_rank_6_b1.g`](find_rank_6_b1.g) and [`find_rank_6_b2.g`](
 ``` sh
 gap -q < find_rank_6_b1.g
 ```
-However, before running these make sure to edit the variable `OutputDirr` to point to where the resulting files of groups should be saved. All of these files were generated using `GAP 4.11.1` and `GAP 4.12.2`. Memory usage can be a concern on less powerful systems with some sets of parameters taking over 48 GB of RAM.
+However, before running these make sure to edit the variable `OutputDirr` in these files to point to where the resulting files of groups should be saved. All of these files were generated using `GAP 4.11.1` and `GAP 4.12.2`. Memory usage can be a concern on less powerful systems with some sets of parameters taking over 48 GB of RAM.
 
 The file [`summary_stats.g`](summary_stats.g) provides useful enumeration code for working with all of the groups generated. Again before using it, change the variable `FolderPath` to point to where the generated groups are saved.
 

@@ -134,14 +134,7 @@ GroupList := [
     [Line54PlusGrps,  54, 2, 2, 3,   1, 8,  2, "+"],
 ];;
 
-OutputFile := "/home/spamakin/projects/research/classification/final_table_tex.txt";;
-PrintTo(OutputFile, "");;
-AppendTo(OutputFile, "\\begin{table}[!ht]\n");;
-AppendTo(OutputFile, "    \\centering\n");;
-AppendTo(OutputFile, "    \\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}\n");;
-AppendTo(OutputFile, "        \\hline\n");;
-AppendTo(OutputFile, "        No. & $q$ & $m$ & $p$ & $k$ & $d$ & $b$ & et & \\# Rank 2 & \\# Rank 3 & \\# Rank 4 & \\# Rank 5 & \\# Rank 6 \\\\ \n");;
-AppendTo(OutputFile, "        \\hline\n");;
+OutputFile := "";;
 for Params in GroupList do
     Grps := Params[1];
     Line := Params[2];
@@ -153,21 +146,10 @@ for Params in GroupList do
     b    := Params[8];
     et   := Params[9];
 
-    # Replace the following with any code you want
-    if Length(Grps) > 0 then
-        Ranks := [0, 0, 0, 0, 0, 0];
-        GLp := GL(b * k * q^m, p);
-        permp := IsomorphismPermGroup(GLp);
-        for G0 in Grps do
-            G0Perm := Image(permp, G0);
-            rank := Size(Orbits(G0Perm)) + 1;
-            Ranks[rank] := Ranks[rank] + 1;
-        od;
-        AppendTo(OutputFile, "        ", Line, " & ", q, " & ", m, " & ", p, " & ", k, " & ", d, " & ", b, " & $", et, "$ & ", Ranks[2], " & ", Ranks[3], " & ", Ranks[4], " & ", Ranks[5], " & ", Ranks[6], "\\\\ \n");;
-        AppendTo(OutputFile, "        \\hline\n");;
+    # Place any code you want here, the world is your oyster
+
+
     fi;
 od;
-AppendTo(OutputFile, "    \\end{tabular}\n");;
-AppendTo(OutputFile, "\\end{table}\n");;
 
 quit;
