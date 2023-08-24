@@ -1,10 +1,12 @@
 # Classifying Primitive Solvable Permutation Groups of Rank 5 and 6
 
+Authors: [Anakin Dey](https://www.anakin-dey.com/), Kolton O'Neal, Duc Van Khanh Tran, Camron Upshur, and [Yong Yang](https://faculty.txst.edu/profile/1922563).
+
 ### Tour of the Repository
 
 Running [`bounds.py`](bounds.py) will generate the list of possible parameters as described in Algorithm 2.11. 
 
-The `GAP` files [`find_rank_6_b1.g`](find_rank_6_b1.g) and [`find_rank_6_b2.g`](find_rank_6_b2.g) contain implementations of Algorithm 3.1 in the case of both `b = 1` and `b > 1`. The file [`e6.g`](e6.g) contains an implementation of the decomposition described in Lemma 3.2. These can be run as such in any commandline:
+The `GAP` files [`find_rank_6_b1.g`](find_rank_6_b1.g) and [`find_rank_6_b2.g`](find_rank_6_b2.g) contain implementations of Algorithm 3.1 in the case of both `b = 1` and `b > 1`. The file [`e6.g`](e6.g) contains an implementation of the decomposition described in Lemma 3.2. These can be run as such in any command line:
 ``` sh
 gap -q < find_rank_6_b1.g
 ```
