@@ -44,6 +44,27 @@ def getDivisors(n):
             divisors.append(i)
     return divisors
 
+# https://www.tutorialspoint.com/coin-change-in-python
+def coinChange(coins, amount):
+      if amount == 0 :
+         return 0
+      if min(coins) > amount:
+         return -1
+      dp = [-1 for i in range(0, amount + 1)]
+      for i in coins:
+         if i > len(dp) - 1:
+            continue
+         dp[i] = 1
+         for j in range(i + 1, amount + 1):
+            if dp[j - i] == -1:
+               continue
+            elif dp[j] == -1:
+               dp[j] = dp[j - i] + 1
+            else:
+               dp[j] = min(dp[j], dp[j - i] + 1)
+         #print(dp)
+      return dp[amount]
+
 
 def getRankEstimate(e, w, b, dim):
     # Relies on e being in {2,3,4,8,9,16}
@@ -74,13 +95,7 @@ def getRankEstimate(e, w, b, dim):
         # Biggest factor is first
         factorsList = getDivisors(dim * af * e**2 * (w - 1))[::-1]
         temp = w ** (e * b) - 1
-        curr_rank = 1
-
-        while temp > 0:
-            for factor in factorsList:
-                while factor <= temp:
-                    temp -= factor
-                    curr_rank += 1
+        curr_rank = 1 + coinChange(factorsList, temp)
 
         rank = min(rank, curr_rank)
 
@@ -137,6 +152,7 @@ for e in [2, 3, 4, 8, 9, 16]:
     elif e == 16:
         wBound = 3
     while w <= wBound:
+        print("e = ", str(e), ", w = ", str(w), "\n")
         p, k = powerOfPrime(w)  # w = p^k
         if p == -1:
             # ep divides |W| - 1
