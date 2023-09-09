@@ -167,6 +167,8 @@ for e in [2, 3, 4, 8, 9, 16]:
                 oldRankLowerBound = getOldRankEstimate(e, w, b, dim)
                 if oldRankLowerBound <= 6:
                     tryNextB = True
+                else:
+                    continue
 
                 rankLowerBound = getRankEstimate(e, w, b, dim)
                 if rankLowerBound <= 6:
