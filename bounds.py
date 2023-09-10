@@ -44,26 +44,27 @@ def getDivisors(n):
             divisors.append(i)
     return divisors
 
-# https://www.tutorialspoint.com/coin-change-in-python
+
 def coinChange(coins, amount):
-      if amount == 0 :
-         return 0
-      if min(coins) > amount:
-         return -1
-      dp = [-1 for i in range(0, amount + 1)]
-      for i in coins:
-         if i > len(dp) - 1:
-            continue
-         dp[i] = 1
-         for j in range(i + 1, amount + 1):
-            if dp[j - i] == -1:
-               continue
-            elif dp[j] == -1:
-               dp[j] = dp[j - i] + 1
-            else:
-               dp[j] = min(dp[j], dp[j - i] + 1)
-         #print(dp)
-      return dp[amount]
+    # We assume coins are sorted from smallest to largest
+    coins.sort()
+
+    # If we use 0 coins, then there is no way to make change
+    num_coins = [float("inf") for _ in range(amount + 1)]
+
+    for coin in coins:
+        for i in range(amount + 1):
+            # We can't use a coin if it is too big
+            if i < coin:
+                continue
+            # If i == coin, then clearly the best we can do is use it
+            elif i == coin:
+                num_coins[i] = 1
+            # Otherwise, either use the current coin or don't and take best
+            elif i > coin:
+                num_coins[i] = min(num_coins[i], num_coins[i - coin] + 1)
+
+    return num_coins[amount]
 
 
 def getRankEstimate(e, w, b, dim):
@@ -152,7 +153,6 @@ for e in [2, 3, 4, 8, 9, 16]:
     elif e == 16:
         wBound = 3
     while w <= wBound:
-        print("e = ", str(e), ", w = ", str(w), "\n")
         p, k = powerOfPrime(w)  # w = p^k
         if p == -1:
             # ep divides |W| - 1
@@ -172,7 +172,6 @@ for e in [2, 3, 4, 8, 9, 16]:
 
                 rankLowerBound = getRankEstimate(e, w, b, dim)
                 if rankLowerBound <= 6:
-                    rankLowerBound = math.ceil(rankLowerBound)
                     q, m = powerOfPrime(e)  # e = q^m
                     if dim != k:
                         continue
