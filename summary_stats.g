@@ -134,7 +134,6 @@ GroupList := [
     [Line54PlusGrps,  54, 2, 2, 3,   1, 8,  2, "+"],
 ];;
 
-OutputFile := "";;
 for Params in GroupList do
     Grps := Params[1];
     Line := Params[2];
@@ -148,8 +147,6 @@ for Params in GroupList do
 
     # Place any code you want here, the world is your oyster
 
-
-    fi;
 od;
 
 quit;
